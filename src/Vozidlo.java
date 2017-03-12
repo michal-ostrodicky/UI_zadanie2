@@ -22,19 +22,19 @@ public class Vozidlo {
 	public int getVelkost() {
 		return velkost;
 	}
-	public void setVelkost(byte velkost) {
+	public void setVelkost(int velkost) {
 		this.velkost = velkost;
 	}
 	public int getSuradnicaX() {
 		return suradnicaX;
 	}
-	public void setSuradnicaX(byte suradnicaX) {
+	public void setSuradnicaX(int suradnicaX) {
 		this.suradnicaX = suradnicaX;
 	}
 	public int getSuradnicaY() {
 		return suradnicaY;
 	}
-	public void setSuradnicaY(byte suradnicaY) {
+	public void setSuradnicaY(int suradnicaY) {
 		this.suradnicaY = suradnicaY;
 	}
 	public char getPosun() {
