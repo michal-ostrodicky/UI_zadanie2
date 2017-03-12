@@ -16,8 +16,8 @@ public class prehladavanie {
 		
 		Uzol pociatocnyStav = new Uzol(zaciatokVozidla, null, null);
 
-
-		System.out.println("Suradnica X pozadovaneho vozidla " + zaciatokVozidla.get(1).getSuradnicaX());
+		
+		pociatocnyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
 	}
 
 	

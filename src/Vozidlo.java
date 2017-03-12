@@ -46,9 +46,8 @@ public class Vozidlo {
 	
 	public void vypisDetailyVozidla() {
 		System.out.println("farba = " + this.farba + "\n");
-		System.out.println("suradnice x=" + this.suradnicaX + " , y= " + this.suradnicaY + "\n");
-		System.out.println("farba = " + this.farba + "\n");
-		System.out.println("farba = " + this.farba + "\n");
+		System.out.println("suradnice x= " + this.suradnicaX + ", y= " + this.suradnicaY + "\n");
+		System.out.println("posun = " + this.posun + "\n");
 		
 	}
 }
