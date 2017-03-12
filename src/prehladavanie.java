@@ -1,34 +1,66 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Stack;
 
 public class prehladavanie {
 
+	
+	
 	public static void main(String[] args) {
 		List<Vozidlo> zaciatokVozidla = new ArrayList<Vozidlo>();
 		//Vytvaranie vozidiel do vstupneho stavu
 		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 3, 'h');
-		//Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
+		Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
 		//Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove", 2, 1, 1, 'h');
 		zaciatokVozidla.add(cerveneVozidlo);
-		//zaciatokVozidla.add(zeleneVozidlo);
+		zaciatokVozidla.add(zeleneVozidlo);
 		//zaciatokVozidla.add(oranzoveVozidlo);
 		
-		Uzol pociatocnyStav = new Uzol(zaciatokVozidla, null, null);
+		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,null,null);
 		 
-		pociatocnyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
+		//pociatocnyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
 		
 		
 		Queue<Uzol> rad = new LinkedList<>();
-	    HashSet spracovany = new HashSet();
+	    HashMap spracovany = new HashMap();
 	    rad.add(pociatocnyStav);
-	    spracovany.add(pociatocnyStav);
+	    spracovany.put(pociatocnyStav.getHashCode(), pociatocnyStav);
+
 	    int o = 0;
 	    
-	    while(!rad.isEmpty()){
+	    
+	    List<Vozidlo> pokusVozidla = new ArrayList<Vozidlo>();
+	    Vozidlo cerveneVozidlo2 = new Vozidlo("Cervene", 2, 3, 3, 'h');
+	    Vozidlo oranzoveVozidlo = new Vozidlo("Zelene", 3, 4, 2, 'v');
+	    pokusVozidla.add(cerveneVozidlo2);
+	    pokusVozidla.add(oranzoveVozidlo);
+	    Uzol skusobnyStav = new Uzol(pokusVozidla,pociatocnyStav,null);
+	    
+	    
+	    System.out.println("Skusobny " + skusobnyStav.getHashCode());
+	    System.out.println("Pociatocny " + pociatocnyStav.getHashCode());
+	    
+	    if(!spracovany.containsKey(skusobnyStav.getHashCode())){
+	    	System.out.println("Dany stav sa uz hashmape nenachadza");
+		} else {
+			System.out.println("Dany stav sa uz hashmape nachadza");
+			
+		}
+	    
+	    
+	  //Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
+	  		//Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove", 2, 1, 1, 'h');
+	    //pokusVozidla.add(zeleneVozidlo);
+	    //pokusVozidla.add(oranzoveVozidlo);
+	    
+	
+	    
+	  /*  while(!rad.isEmpty()){
 	        Uzol sucasnyUzol = rad.remove();
 	        
 	        //Zistenie ci je najdena cielova pozicia
@@ -153,7 +185,7 @@ public class prehladavanie {
 	            	}
 	        	}
 	        spracovany.add(sucasnyUzol);	
-		    }
+		    }*/
         	
 	}
 	    
@@ -175,8 +207,8 @@ public class prehladavanie {
 	    
 	
 	
-	public static Uzol operaciaVpravo(Uzol stav, int indexVozidla, int posunNaPoziciu) {
-		Uzol novyStav = new Uzol(stav.getPoleVozidiel(),stav,"Vpravo");
+	/*public static Uzol operaciaVpravo(Uzol stav, int indexVozidla, int posunNaPoziciu) {
+		Uzol novyStav = new Uzol(stav.getPoleVozidiel());
 
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
 		
@@ -184,7 +216,7 @@ public class prehladavanie {
 	}
 	
 	public static Uzol operaciaVlavo(Uzol stav, int indexVozidla, int posunNaPoziciu) {
-		Uzol novyStav = new Uzol(stav.getPoleVozidiel(),stav,"Vlavo");
+		Uzol novyStav = new Uzol(stav.getPoleVozidiel());
 
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
 		
@@ -192,7 +224,7 @@ public class prehladavanie {
 	}
 	
 	public static Uzol operaciaDole(Uzol stav, int indexVozidla, int posunNaPoziciu) {
-		Uzol novyStav = new Uzol(stav.getPoleVozidiel(),stav,"Dole");
+		Uzol novyStav = new Uzol(stav.getPoleVozidiel());
 
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
 		
@@ -200,12 +232,12 @@ public class prehladavanie {
 	}
 	
 	public static Uzol operaciaHole(Uzol stav, int indexVozidla, int posunNaPoziciu) {
-		Uzol novyStav = new Uzol(stav.getPoleVozidiel(),stav,"Hore");
+		Uzol novyStav = new Uzol(stav.getPoleVozidiel());
 
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
 		
 		return novyStav;
-	}
+	}*/
 	
 }
 	/*public boolean BFS(Uzol pociatocnyStav){
