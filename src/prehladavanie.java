@@ -12,27 +12,28 @@ public class prehladavanie{
 	public static void main(String[] args)  {
 		List<Vozidlo> zaciatokVozidla = new ArrayList<Vozidlo>();
 		//Vytvaranie vozidiel do vstupneho stavu
-		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 5, 3, 'v');
-		//Vozidlo cervene2Vozidlo = new Vozidlo("Cervene", 2, 3, 1, 'h');
-		//Vozidlo cervene3Vozidlo = new Vozidlo("Cervene", 2, 3, 5, 'h');
-		/*Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
+		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 2, 'h');
+		Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove",2 ,1 ,1 , 'h');
+		Vozidlo zlteVozidlo = new Vozidlo("Zlte", 3, 2, 1, 'v');
+		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
+		Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
+		
 		Vozidlo svetlomodreVozidlo = new Vozidlo("Svetlomodre", 3, 6, 3, 'h');
 		Vozidlo siveVozidlo = new Vozidlo("Sive", 2, 5, 5, 'h');
-		Vozidlo zlteVozidlo = new Vozidlo("Zlte", 3, 2, 1, 'v');
 		Vozidlo tmavomodreVozidlo = new Vozidlo("Tmavomodre", 3, 1, 6, 'v');
-		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
-		Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove",2 ,1 ,1 , 'h');*/
+		
+		
 		
 		zaciatokVozidla.add(cerveneVozidlo);
-		//zaciatokVozidla.add(cervene2Vozidlo);
-		//zaciatokVozidla.add(cervene3Vozidlo);
-		/*zaciatokVozidla.add(zeleneVozidlo);
+		zaciatokVozidla.add(oranzoveVozidlo);
+		zaciatokVozidla.add(zlteVozidlo);
+		zaciatokVozidla.add(fialoveVozidlo);
+		zaciatokVozidla.add(zeleneVozidlo);
 		zaciatokVozidla.add(svetlomodreVozidlo);
 		zaciatokVozidla.add(siveVozidlo);
-		zaciatokVozidla.add(zlteVozidlo);
 		zaciatokVozidla.add(tmavomodreVozidlo);
-		zaciatokVozidla.add(fialoveVozidlo);
-		zaciatokVozidla.add(oranzoveVozidlo);*/
+		
+		
 		
 		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,null,"LOLO");
 		 
@@ -48,7 +49,7 @@ public class prehladavanie{
 	    vytvoreneUzly.put(pociatocnyStav.getHashCode(), pociatocnyStav);
 	    //System.out.println("Hash kod pre tento stav> " + pociatocnyStav.getHashCode());
 	    
-	    
+	    int o = 0;
 	    while(!radNespracovanych.isEmpty()){
 	    	
 	 	    
@@ -70,14 +71,14 @@ public class prehladavanie{
 	        	break;
 	        	
 	        }
-	        System.out.println("Zmena stavu LOLO ------ ");
+	        //System.out.println("Zmena stavu LOLO ------ " + o++);
 	       
 	        System.out.println("Aktualne pracujem s:");
 	        sucasnyUzol.vypisVozidiel();
 
 
 	        for(int i=0; i<sucasnyUzol.getPoleVozidiel().size(); i++) { // pre kazde vozidlo v stave urob operaciu ak sa da
-	        	
+	        	System.out.println(o++);
 	        	int suradnicaX = sucasnyUzol.getPoleVozidiel().get(i).getSuradnicaX();
 	            int suradnicaY = sucasnyUzol.getPoleVozidiel().get(i).getSuradnicaY();
 	            int velkost = sucasnyUzol.getPoleVozidiel().get(i).getVelkost();
@@ -100,9 +101,10 @@ public class prehladavanie{
 	            							} else {
 	            								radNespracovanych.add(novyStav);
 	            								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	            								System.out.println("Pridal som novy stav");
-	            								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
 	            								novyStav.vypisVozidiel();
+	            								
 	            							}
 
 	            					} else {
@@ -113,15 +115,24 @@ public class prehladavanie{
 	            		indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
 	            		for(int j=1; j<5; j++) { //vytvaranie posunom vlavo	
 	            					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava
-	            				if ((mapa[indexVPoli-j] != 1) && ((suradnicaX-j)) >= 1) {
+	            			
+	            				if ((indexVPoli-j > 0) && (mapa[indexVPoli-j] != 1) && ((suradnicaX-j) >= 1)) {
 	            							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
 	            							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	            								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+	            								//System.out.println("Tu som3");
+	            								/*if (o == 7 ) {
+	            									
+	            									System.out.println("LOL");
+	            									novyStav.vypisVozidiel();
+	            								}
+	            								//	*/
+	            								//novyStav.vypisVozidiel();
+	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
 	            							} else {
 	            								radNespracovanych.add(novyStav);
 	            								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	            								System.out.println("Pridal som novy stav");
-	            								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
 	            								novyStav.vypisVozidiel();
 	            							}
 	            					} else {
@@ -133,16 +144,16 @@ public class prehladavanie{
 	            	indexVPoli = (suradnicaY-1)*6 + suradnicaX + velkost - 2;
 	            	for(int j=1; j<4; j++) { //vytvaranie posunom vpravo
     					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
-    					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 5)) { 
+    					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) <= 5)) { // namiesto 5 je tu 6
     						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
     							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
     								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-    								//novyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
+
     							} else {
     								radNespracovanych.add(novyStav);
     								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-    								System.out.println("Pridal som novy stav");
-    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
     								novyStav.vypisVozidiel();
     							}
     					} else {
@@ -151,7 +162,7 @@ public class prehladavanie{
 	            	}   	
 	            	
 	            	indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
-			    	for(int j=1; j<5; j++) { //vytvaranie posunom vlavo	
+			    	for(int j=1; j<4; j++) { //vytvaranie posunom vlavo	
 			    					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava
 			    				if ((mapa[indexVPoli-j] != 1) && ((suradnicaX-j)) >= 1) {
 			    							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
@@ -160,8 +171,8 @@ public class prehladavanie{
 			    							} else {
 			    								radNespracovanych.add(novyStav);
 			    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-			    								System.out.println("Pridal som novy stav");
-			    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+			    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+			    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
 			    								novyStav.vypisVozidiel();
 			    							}
 			    				} else {
@@ -176,15 +187,16 @@ public class prehladavanie{
 	            	if (velkost == 2) {
 	            			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
 			            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
-			            		if ((mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
-			            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaX-j,j);
+			            		
+			            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
+			            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
 	    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
 	    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
 	    							} else {
 	    								radNespracovanych.add(novyStav);
 	    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	    								System.out.println("Pridal som novy stav");
-	    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+	    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+	    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
 	    								novyStav.vypisVozidiel();			
 	    							}
 			            		}
@@ -192,7 +204,7 @@ public class prehladavanie{
 		            				break;
 		            			}
 		            		}
-		            /*
+		            
 			            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 6; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
 		            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
 		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
@@ -202,21 +214,69 @@ public class prehladavanie{
 		    							} else {
 		    								radNespracovanych.add(novyStav);
 		    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-		    								System.out.println("Pridal som novy stav");
-		    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
 		    								novyStav.vypisVozidiel();			
 		    							}
 		        					} else {
 		        						break;
 		        					}
-		            	}*/
+		            	}
             	} // endif Velkost == 2
-            	} // endif smer == v
+	            	else if (velkost == 3) {
+	            		
+	            			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
+			            	for(int j=1; j<4; j++) { //vytvaranie posunom hore
+			            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
+			            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
+	    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
+	    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+	    							} else {
+	    								radNespracovanych.add(novyStav);
+	    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
+	    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+	    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+	    								novyStav.vypisVozidiel();			
+	    							}
+			            		}
+			            		else {
+		            				break;
+		            			}
+		            		}
+			            	
+			            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 12; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
+		            	for(int j=1; j<4; j++) { //vytvaranie posunom dole
+		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
+	        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
+	        							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
+		    								
+	        								if (o == 8 ) {
+		    									System.out.println("shit");
+		    									novyStav.vypisVozidiel();
+		    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+		    								}
+		    							} else {
+		    								radNespracovanych.add(novyStav);
+		    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
+		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
+		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+		    								novyStav.vypisVozidiel();			
+		    							}
+		        					} else {
+		        						break;
+		        					}
+		            	}
+	            	} // endif smer == 3
+            	} // vertikalny pohyb 
+	            	
 	        } //endfor vykonat operator na kazde vozidlo
 	        
 	        
 		    } //while is empty
-	    
+	    /*if(radNespracovanych.isEmpty()) {
+	    	System.out.println("Prazdny zasobnik ");
+	    	
+	    }*/
 	  //vytvoreneUzly.put(sucasnyUzol.getHashCode(), sucasnyUzol);
 	    
         
@@ -258,7 +318,7 @@ public class prehladavanie{
 	    
 	//funkcia na porovnanie cieloveho stavu, ak nulte(cervene) auto dosiahne suradnicu x = 5, nasli sme konecny stav
 	public static boolean porovnajCielovy(Uzol uzol) {
-		if(uzol.getPoleVozidiel().get(0).getSuradnicaY() == 1){
+		if(uzol.getPoleVozidiel().get(0).getSuradnicaX() == 5){
         	System.out.println("Nasli sme cielovu poziciu");
         	return true;
         }

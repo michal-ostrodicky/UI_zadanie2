@@ -20,10 +20,6 @@ public class Uzol {
 		this.poslednePouzityOperator = uzol.poslednePouzityOperator;
 		
 	}
-	public Uzol() {
-		// TODO Auto-generated constructor stub
-	}
-
 
 	public List<Vozidlo> getPoleVozidiel() {
 		return poleVozidiel;
@@ -49,18 +45,24 @@ public class Uzol {
 		
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			Object[] x = {poleVozidiel.get(i).getSuradnicaX(),poleVozidiel.get(i).getSuradnicaY(), 
-					poleVozidiel.get(i).getVelkost(),poleVozidiel.get(i).getPosun()};
+					poleVozidiel.get(i).getVelkost(),poleVozidiel.get(i).getPosun(),poleVozidiel.get(i).getFarba()};
 			hashArray = hashArray + Arrays.hashCode(x);
 		}
 		return hashArray;
 	}
 	
+	@Override
+	public int hashCode() {
+	    return Objects.hash(poleVozidiel);
+	}
 	
 	public void vypisVozidiel() {
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			System.out.println("farba = " + poleVozidiel.get(i).getFarba());
 			System.out.println("suradnice x= " + poleVozidiel.get(i).getSuradnicaX() + ", y= " + poleVozidiel.get(i).getSuradnicaY());
+			System.out.println("velkost " + poleVozidiel.get(i).getVelkost());
 			System.out.println("posun = " + poleVozidiel.get(i).getPosun() + "\n");
 		}
+		System.out.println("---------");
 	}
 }
