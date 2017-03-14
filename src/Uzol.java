@@ -7,13 +7,24 @@ public class Uzol {
 	private Uzol predchodza; 
 	private String poslednePouzityOperator;
 	
-	public Uzol(List<Vozidlo> poleVozidiel, Uzol predchodza , String poslednePouzityOperator ) {
+	public Uzol(List<Vozidlo> poleVozidiel, Uzol predchodza , String string ) {
 		this.poleVozidiel = poleVozidiel;
 		this.predchodza = predchodza;
-		this.poslednePouzityOperator = poslednePouzityOperator;
+		this.poslednePouzityOperator = string;
 		
 	}
 	
+	public Uzol(Uzol uzol) {
+		this.poleVozidiel = uzol.poleVozidiel;
+		this.predchodza = uzol.predchodza;
+		this.poslednePouzityOperator = uzol.poslednePouzityOperator;
+		
+	}
+	public Uzol() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public List<Vozidlo> getPoleVozidiel() {
 		return poleVozidiel;
 	}
@@ -39,8 +50,17 @@ public class Uzol {
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			Object[] x = {poleVozidiel.get(i).getSuradnicaX(),poleVozidiel.get(i).getSuradnicaY(), 
 					poleVozidiel.get(i).getVelkost(),poleVozidiel.get(i).getPosun()};
-			hashArray = hashArray + Arrays.hashCode(x)*(i+1);
+			hashArray = hashArray + Arrays.hashCode(x);
 		}
 		return hashArray;
+	}
+	
+	
+	public void vypisVozidiel() {
+		for(int i=0; i<poleVozidiel.size(); i++) {
+			System.out.println("farba = " + poleVozidiel.get(i).getFarba());
+			System.out.println("suradnice x= " + poleVozidiel.get(i).getSuradnicaX() + ", y= " + poleVozidiel.get(i).getSuradnicaY());
+			System.out.println("posun = " + poleVozidiel.get(i).getPosun() + "\n");
+		}
 	}
 }

@@ -9,6 +9,8 @@ public class Vozidlo {
 	public Vozidlo(String farba, int i, int k, int j,char posun) {
 		this.farba = farba;
 		this.velkost = i;
+		//int suradnicaXvPoli = (j-1) % 7;
+		//int indexVPoli = (k-1)*6 + suradnicaXvPoli;
 		this.suradnicaX = j;
 		this.suradnicaY = k;
 		this.posun = posun;
@@ -45,8 +47,8 @@ public class Vozidlo {
 	}
 	
 	public void vypisDetailyVozidla() {
-		System.out.println("farba = " + this.farba + "\n");
-		System.out.println("suradnice x= " + this.suradnicaX + ", y= " + this.suradnicaY + "\n");
+		System.out.println("farba = " + this.farba);
+		System.out.println("suradnice x= " + this.suradnicaX + ", y= " + this.suradnicaY);
 		System.out.println("posun = " + this.posun + "\n");
 		
 	}
