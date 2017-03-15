@@ -15,29 +15,37 @@ public class prehladavanie{
 		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 2, 'h');
 		Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove",2 ,1 ,1 , 'h');
 		Vozidlo zlteVozidlo = new Vozidlo("Zlte", 3, 2, 1, 'v');
-		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
+		// ZO ZADANIA Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
+		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,3 , 'h');
 		Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
 		
 		Vozidlo svetlomodreVozidlo = new Vozidlo("Svetlomodre", 3, 6, 3, 'h');
 		Vozidlo siveVozidlo = new Vozidlo("Sive", 2, 5, 5, 'h');
 		Vozidlo tmavomodreVozidlo = new Vozidlo("Tmavomodre", 3, 1, 6, 'v');
 		
-		
+		/*
+		1, 1, 0, 0, 0, 1, 
+		1, 0, 0, 1, 0, 1, 
+		1, 1, 1, 1, 0, 1, 
+		1, 0, 0, 1, 0, 0, 
+		1, 0, 0, 0, 1, 1, 
+		1, 0, 1, 1, 1, 0, 
+		 */
 		
 		zaciatokVozidla.add(cerveneVozidlo);
-		zaciatokVozidla.add(oranzoveVozidlo);
-		zaciatokVozidla.add(zlteVozidlo);
+		/*zaciatokVozidla.add(oranzoveVozidlo);
+		zaciatokVozidla.add(zlteVozidlo);*/
 		zaciatokVozidla.add(fialoveVozidlo);
 		zaciatokVozidla.add(zeleneVozidlo);
 		zaciatokVozidla.add(svetlomodreVozidlo);
-		zaciatokVozidla.add(siveVozidlo);
-		zaciatokVozidla.add(tmavomodreVozidlo);
+		/*zaciatokVozidla.add(siveVozidlo);
+		zaciatokVozidla.add(tmavomodreVozidlo);*/
 		
 		
 		
-		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,null,"LOLO");
+		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,null);
+		pociatocnyStav.setHashStavu(pociatocnyStav.getHashStavu());
 		 
-		
 		
 		
 		//pociatocnyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
@@ -50,35 +58,50 @@ public class prehladavanie{
 	    //System.out.println("Hash kod pre tento stav> " + pociatocnyStav.getHashCode());
 	    
 	    int o = 0;
+
 	    while(!radNespracovanych.isEmpty()){
-	    	
-	 	    
+	    	/*o++;
+	 	    if (o == 2) {
+	 	    	break;
+	 	    }*/
 	    	System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size());
 	        Uzol sucasnyUzol = radNespracovanych.remove();
 	        int[] mapa = new int[50];
+	       
 	 	    vytvorPole(sucasnyUzol,mapa);
-	        //System.out.println(sucasnyUzol.getPoslednePouzityOperator());
+	        System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
 	        //Zistenie ci je najdena cielova pozicia       
 	        if (porovnajCielovy(sucasnyUzol)){
-	        	sucasnyUzol.vypisVozidiel();
 	        	
-	        	System.out.println("Postupnost operatorov: ");
-	        	while(sucasnyUzol.getPredchodza() != null) {      		
-	        		System.out.println(sucasnyUzol.getPoslednePouzityOperator());
-	        		sucasnyUzol = sucasnyUzol.getPredchodza();
-	        	}
+	        	sucasnyUzol.vypisVozidiel();
+
+	        	System.out.println("**** Postupnost operatorov: ****" );
+	        	while(sucasnyUzol.getHashPredchodcu() != 0) {      		
+	        		System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
+	        		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
+	        		int hash = sucasnyUzol.getHashPredchodcu();
+	        		//System.out.println("Dalsi " + hash);
+	        		sucasnyUzol = vytvoreneUzly.get(hash);
 	        		
+	        	}
+	        	System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
 	        	break;
+	        	/*if (maxKroky > pocetKrokov ) {
+	        		save = vypis;
+        			maxKroky = pocetKrokov;
+        		}
+	        	sucasnyUzol = temp;*/
 	        	
 	        }
-	        //System.out.println("Zmena stavu LOLO ------ " + o++);
+	        
 	       
-	        System.out.println("Aktualne pracujem s:");
-	        sucasnyUzol.vypisVozidiel();
+	       
+	        //System.out.println("Aktualne pracujem s:");
+	        //sucasnyUzol.vypisVozidiel();
 
 
 	        for(int i=0; i<sucasnyUzol.getPoleVozidiel().size(); i++) { // pre kazde vozidlo v stave urob operaciu ak sa da
-	        	System.out.println(o++);
+	        	//System.out.println(o++);
 	        	int suradnicaX = sucasnyUzol.getPoleVozidiel().get(i).getSuradnicaX();
 	            int suradnicaY = sucasnyUzol.getPoleVozidiel().get(i).getSuradnicaY();
 	            int velkost = sucasnyUzol.getPoleVozidiel().get(i).getVelkost();
@@ -96,14 +119,23 @@ public class prehladavanie{
 	            					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 6)) { 
 	            						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
 	            							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	            								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
 	            								//novyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
+	            								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+	            								if (!zistiTotoznost(porovnavaci,novyStav)) {
+	            									radNespracovanych.add(novyStav);
+	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+	            								} 
 	            							} else {
 	            								radNespracovanych.add(novyStav);
 	            								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-	            								novyStav.vypisVozidiel();
+	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+	            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+	            								//novyStav.vypisVozidiel();
 	            								
 	            							}
 
@@ -119,21 +151,24 @@ public class prehladavanie{
 	            				if ((indexVPoli-j > 0) && (mapa[indexVPoli-j] != 1) && ((suradnicaX-j) >= 1)) {
 	            							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
 	            							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	            								//System.out.println("Tu som3");
-	            								/*if (o == 7 ) {
-	            									
-	            									System.out.println("LOL");
-	            									novyStav.vypisVozidiel();
-	            								}
-	            								//	*/
 	            								//novyStav.vypisVozidiel();
-	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+
+	            								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+	            								if (!zistiTotoznost(porovnavaci,novyStav)) {
+	            									radNespracovanych.add(novyStav);
+	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+	            								} 
 	            							} else {
 	            								radNespracovanych.add(novyStav);
 	            								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-	            								novyStav.vypisVozidiel();
+	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+	            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+	            								//novyStav.vypisVozidiel();
 	            							}
 	            					} else {
 	            						break;
@@ -144,17 +179,27 @@ public class prehladavanie{
 	            	indexVPoli = (suradnicaY-1)*6 + suradnicaX + velkost - 2;
 	            	for(int j=1; j<4; j++) { //vytvaranie posunom vpravo
     					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
-    					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) <= 5)) { // namiesto 5 je tu 6
+    					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 5)) { // namiesto 5 je tu 6
     						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
     							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
     								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+    								if (!zistiTotoznost(porovnavaci,novyStav)) {
+    									radNespracovanych.add(novyStav);
+    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+        										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+    								}
 
     							} else {
     								radNespracovanych.add(novyStav);
     								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-    								novyStav.vypisVozidiel();
+    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+    								//novyStav.vypisVozidiel();
     							}
     					} else {
     						break;
@@ -165,15 +210,25 @@ public class prehladavanie{
 			    	for(int j=1; j<4; j++) { //vytvaranie posunom vlavo	
 			    					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava
 			    				if ((mapa[indexVPoli-j] != 1) && ((suradnicaX-j)) >= 1) {
+			    					
 			    							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
 			    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-			    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+			    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+	            								if (!zistiTotoznost(porovnavaci,novyStav)) {
+	            									radNespracovanych.add(novyStav);
+	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+	            											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+	            								}
 			    							} else {
 			    								radNespracovanych.add(novyStav);
 			    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-			    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-			    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-			    								novyStav.vypisVozidiel();
+			    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+			    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+			    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+			    								//novyStav.vypisVozidiel();
 			    							}
 			    				} else {
 			    					break;
@@ -185,87 +240,124 @@ public class prehladavanie{
 	        	} // endIF horizontalne 
 	            else if (smer == 'v' ) { // OPERACIE  HORE & DOLE
 	            	if (velkost == 2) {
-	            			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
-			            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
-			            		
-			            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
-			            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
-	    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-	    							} else {
-	    								radNespracovanych.add(novyStav);
-	    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-	    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-	    								novyStav.vypisVozidiel();			
-	    							}
-			            		}
-			            		else {
-		            				break;
-		            			}
-		            		}
-		            
 			            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 6; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
 		            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
 		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
 	        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
 	        							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
 		    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+	        								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+            								if (!zistiTotoznost(porovnavaci,novyStav)) {
+            									radNespracovanych.add(novyStav);
+            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+            											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
+            								}
 		    							} else {
 		    								radNespracovanych.add(novyStav);
 		    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-		    								novyStav.vypisVozidiel();			
+		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+		    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+		    								//novyStav.vypisVozidiel();			
 		    							}
 		        					} else {
 		        						break;
 		        					}
 		            	}
+		            	indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
+		            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
+		            		
+		            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
+		            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
+    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
+    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+    								if (!zistiTotoznost(porovnavaci,novyStav)) {
+    									radNespracovanych.add(novyStav);
+    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+    											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+    								}
+    							} else {
+    								radNespracovanych.add(novyStav);
+    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
+    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+    								//novyStav.vypisVozidiel();			
+    							}
+		            		}
+		            		else {
+	            				break;
+	            			}
+	            		}
+	            
             	} // endif Velkost == 2
 	            	else if (velkost == 3) {
 	            		
-	            			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
-			            	for(int j=1; j<4; j++) { //vytvaranie posunom hore
-			            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
-			            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
-	    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-	    							} else {
-	    								radNespracovanych.add(novyStav);
-	    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-	    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-	    								novyStav.vypisVozidiel();			
-	    							}
-			            		}
-			            		else {
-		            				break;
-		            			}
-		            		}
 			            	
 			            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 12; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
 		            	for(int j=1; j<4; j++) { //vytvaranie posunom dole
-		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
+		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 5) {
 	        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
 	        							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-		    								
-	        								if (o == 8 ) {
-		    									System.out.println("shit");
-		    									novyStav.vypisVozidiel();
-		    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-		    								}
+	        								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+	        								
+	        								if (!zistiTotoznost(porovnavaci,novyStav)) {
+	        									radNespracovanych.add(novyStav);
+	        									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+	        											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+	        									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+	        								}
 		    							} else {
 		    								radNespracovanych.add(novyStav);
 		    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba());
-		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-		    								novyStav.vypisVozidiel();			
+		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+		    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+		    								//novyStav.vypisVozidiel();			
 		    							}
 		        					} else {
 		        						break;
 		        					}
 		            	}
+		            	
+
+            			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
+		            	for(int j=1; j<4; j++) { //vytvaranie posunom hore
+		            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
+		            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
+    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
+    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
+    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
+    								if (!zistiTotoznost(porovnavaci,novyStav)) {
+    									radNespracovanych.add(novyStav);
+    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+    											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+    								}
+    							} else {
+    								radNespracovanych.add(novyStav);
+    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
+    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+    								//novyStav.vypisVozidiel();			
+    							}
+		            		}
+		            		else {
+	            				break;
+	            			}
+	            		}
 	            	} // endif smer == 3
             	} // vertikalny pohyb 
 	            	
@@ -273,47 +365,13 @@ public class prehladavanie{
 	        
 	        
 		    } //while is empty
+	  //  System.out.println("***** Pocet " + maxKroky);
+	    //System.out.println(save);
+
 	    /*if(radNespracovanych.isEmpty()) {
 	    	System.out.println("Prazdny zasobnik ");
 	    	
-	    }*/
-	  //vytvoreneUzly.put(sucasnyUzol.getHashCode(), sucasnyUzol);
-	    
-        
-      /*  System.out.println("-----------------------");
-        Uzol novyStav =  new Uzol(pokusVozidla, sucasnyUzol,"VPRAVO" + 5);
-       
-        novyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
-        novyStav.getPoleVozidiel().get(1).vypisDetailyVozidla();
-        
-        sucasnyUzol.getPoleVozidiel().get(0).vypisDetailyVozidla();
-        sucasnyUzol.getPoleVozidiel().get(1).vypisDetailyVozidla();
-        
-        System.out.println(novyStav.getPredchodza().getPoslednePouzityOperator());;
-
-        
-        System.out.println("-----------------------");
-        List<Vozidlo> pokusVozidla2 = new ArrayList<Vozidlo>();
-        for(int p = 0; p<sucasnyUzol.getPoleVozidiel().size();p++) {
-        	int suradnicaX = sucasnyUzol.getPoleVozidiel().get(p).getSuradnicaX()+10000;   	
-        	int suradnicaY = sucasnyUzol.getPoleVozidiel().get(p).getSuradnicaY();
-        	int velkost = sucasnyUzol.getPoleVozidiel().get(p).getVelkost();
-        	char smer = sucasnyUzol.getPoleVozidiel().get(p).getPosun();
-        	String farba = sucasnyUzol.getPoleVozidiel().get(p).getFarba();
-        	
-        	Vozidlo cVozidlo = new Vozidlo(farba, velkost, suradnicaY, suradnicaX, smer);
-        	pokusVozidla2.add(cVozidlo);
-
-        }
-        
-        Uzol novyStav2 = new Uzol(pokusVozidla2, novyStav,"VPRAVO" + 3);
-        novyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
-        novyStav2.getPoleVozidiel().get(0).vypisDetailyVozidla();
-      
-        //novyStav2.getPredchodza().getPoleVozidiel().get(0).vypisDetailyVozidla();
-        System.out.println(novyStav2.getPredchodza().getPoslednePouzityOperator());;
-       // sucasnyUzol.getPoleVozidiel().get(0).vypisDetailyVozidla();
-        	*/
+	    }*/   
 	}
 	    
 	//funkcia na porovnanie cieloveho stavu, ak nulte(cervene) auto dosiahne suradnicu x = 5, nasli sme konecny stav
@@ -327,33 +385,39 @@ public class prehladavanie{
 	
 	public static Uzol operaciaVpravo(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-		
+		int hashPredchodzu;
+		hashPredchodzu = stav.getHashStavu(); 
 
-		/*StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 		builder.append("VPRAVO(");
 		builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 		builder.append(", ");
 		builder.append(posun);
-		builder.append(")");*/
+		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, stav, "VPRAVO " + stav.getPoleVozidiel().get(indexVozidla).getFarba() + " " + posun);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
+		novyStav.setHashStavu(novyStav.getHashCode());
 		return novyStav;
 	}
 	
 	public static Uzol operaciaVlavo(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
 		
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-        
-		/*StringBuilder builder = new StringBuilder();
+		int hashPredchodzu;
+		hashPredchodzu = stav.getHashStavu(); 
+
+		
+		StringBuilder builder = new StringBuilder();
 		builder.append("VLAVO(");
 		builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 		builder.append(", ");
-		builder.append(posunNaPoziciu);
-		builder.append(")");*/
+		builder.append(posun);
+		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, stav, "VLAVO " + stav.getPoleVozidiel().get(indexVozidla).getFarba() + " " + posun);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
+		novyStav.setHashStavu(novyStav.getHashCode());
 		
 		return novyStav;
 	}
@@ -361,16 +425,20 @@ public class prehladavanie{
 	public static Uzol operaciaDole(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
 		
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-      
-		/*StringBuilder builder = new StringBuilder();
+		int hashPredchodzu;
+		hashPredchodzu = stav.getHashStavu(); 
+
+		
+		StringBuilder builder = new StringBuilder();
 		builder.append("DOLE(");
 		builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 		builder.append(", ");
-		builder.append(posunNaPoziciu);
-		builder.append(")");*/
+		builder.append(posun);
+		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, stav, "DOLE " + stav.getPoleVozidiel().get(indexVozidla).getFarba() + " " + posun);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
+		novyStav.setHashStavu(novyStav.getHashCode());
 		
 		return novyStav;
 	}
@@ -378,20 +446,40 @@ public class prehladavanie{
 	public static Uzol operaciaHore(Uzol stav, int indexVozidla, int posunNaPoziciu, int posun) {
 		
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
+		int hashPredchodzu;
+		hashPredchodzu = stav.getHashStavu(); 
+
 		
-		/*StringBuilder builder = new StringBuilder();
-		builder.append("VLAVO(");
+		StringBuilder builder = new StringBuilder();
+		builder.append("HORE(");
 		builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 		builder.append(", ");
-		builder.append(posunNaPoziciu);
+		builder.append(posun);
 		builder.append(")");
-		*/
-		Uzol novyStav = new Uzol(novoVytvorene, stav,"HORE " + stav.getPoleVozidiel().get(indexVozidla).getFarba()+ " " + posun);
+		
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
+		novyStav.setHashStavu(novyStav.getHashCode());
 		
 		return novyStav;
 	}
 	
+	public static Boolean zistiTotoznost(Uzol vHashMape, Uzol novyStav){
+		for(int i = 0; i< vHashMape.getPoleVozidiel().size(); i++) {
+			if((vHashMape.getPoleVozidiel().get(i).getSuradnicaX() == novyStav.getPoleVozidiel().get(i).getSuradnicaX()
+					&& vHashMape.getPoleVozidiel().get(i).getSuradnicaY() == novyStav.getPoleVozidiel().get(i).getSuradnicaY()
+					//&& vHashMape.getPoleVozidiel().get(i).getPosun() == novyStav.getPoleVozidiel().get(i).getPosun() 
+					//&& vHashMape.getPoleVozidiel().get(i).getFarba().equals(novyStav.getPoleVozidiel().get(i).getFarba()) 	
+					)) 
+			{ //ak su rovnake tak nic
+			} else {
+				return false;
+			}
+			
+		}
+		return true;
+		
+	}
 	//Metoda na kopirovanie arraylistu vozidiel, pri vytvarani noveho stavu
 	public static List<Vozidlo> copyArrayList(Uzol stav) {
 		int suradnicaX;
@@ -419,42 +507,22 @@ public class prehladavanie{
 		 String stringovaMapa = new String();
 		 
 		 for(int i = 0; i<uzol.getPoleVozidiel().size(); i++) {
-			 	// 2
+
 			 
 			 int zapisPoctuJednotiekx = uzol.getPoleVozidiel().get(i).getVelkost();
 			 if (uzol.getPoleVozidiel().get(i).getPosun() == 'h') {
-				 
-		    			// 1 3 a 3 3
+
 		    			int suradnicaX = (uzol.getPoleVozidiel().get(i).getSuradnicaX()-1);
 		    			int indexVPoli = (uzol.getPoleVozidiel().get(i).getSuradnicaY()-1)*6 + suradnicaX;
-		    			//indexVPoli[12]
-		    			//indexVPoli[14]
+
 		    			for(int j = 0; j<zapisPoctuJednotiekx; j++ ) {
 		    				mapa[indexVPoli+j] = 1;	
 		    			}    			 
-		    		/*adjacency_matrix =	
-		    		 *{ 
-		    		 0,0,0,0,0,0,  
-		    	     0,0,0,0,0,0,   
-		    	     1,1,1,1,0,0,
-		    	     0,0,0,0,0,0,    
-		    	     0,0,0,0,0,0,    
-		    	     0,0,0,0,0,0};   */	
 		    			
-		    } else {
-	
-	    		 /*{ 
-	    		 0,0,0,0,0,1,  
-	    	     1,0,0,0,0,1,   
-	    	     1,0,0,0,0,1,
-	    	     1,0,0,0,0,0,    
-	    	     0,0,0,0,0,0,    
-	    	     0,0,0,0,0,0};   */	
-		    	
+		    } else {		    	
 		    	int suradnicaX = (uzol.getPoleVozidiel().get(i).getSuradnicaX()-1);
     			int indexVPoli = (uzol.getPoleVozidiel().get(i).getSuradnicaY()-1)*6 + suradnicaX;
-    			//indexVPoli[5]
-    			//indexVPoli[6]
+
     			for(int j = 0; j<zapisPoctuJednotiekx; j++ ) {
     				mapa[indexVPoli+6*j] = 1;	
     			}    		
@@ -476,30 +544,5 @@ public class prehladavanie{
 	
 }
 	
-	
-	/*public  void dfsUsingStack(int adjacency_matrix[][], Uzol uzol)  
-	 {  
-	  Stack<Uzol> stack=new  Stack<Uzol>();  
-	  stack.add(uzol);  
-	  node.visited=true;  
-	  while (!stack.isEmpty())  
-	  {  
-	   Node element=stack.pop();  
-	   System.out.print(element.data + "\t");  
-	  
-	   ArrayList<node> neighbours=findNeighbours(adjacency_matrix,element);  
-	   for (int i = 0; i < neighbours.size(); i++) {  
-	    Node n=neighbours.get(i);  
-	    if(n!=null && !n.visited)  
-	    {  
-	     stack.add(n);  
-	     n.visited=true;  
-	  
-	    }  
-	   }  
-	  }  
-	 } } */
-
-
 
 

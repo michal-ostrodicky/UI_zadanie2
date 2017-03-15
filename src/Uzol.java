@@ -1,43 +1,48 @@
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Uzol {
 	private List<Vozidlo> poleVozidiel;
-	private Uzol predchodza; 
-	private String poslednePouzityOperator;
+	private int hashStavu;
+	private int hashPredchodcu;
 	
-	public Uzol(List<Vozidlo> poleVozidiel, Uzol predchodza , String string ) {
-		this.poleVozidiel = poleVozidiel;
-		this.predchodza = predchodza;
-		this.poslednePouzityOperator = string;
-		
-	}
-	
-	public Uzol(Uzol uzol) {
-		this.poleVozidiel = uzol.poleVozidiel;
-		this.predchodza = uzol.predchodza;
-		this.poslednePouzityOperator = uzol.poslednePouzityOperator;
-		
-	}
 
+	private StringBuilder poslednePouzityOperator;
+	
+	public Uzol(List<Vozidlo> poleVozidiel, int hashPredchodcu, int hashStavu  , StringBuilder builder ) {
+		this.poleVozidiel = poleVozidiel;
+		this.poslednePouzityOperator = builder;
+		this.hashStavu = hashStavu;
+		this.hashPredchodcu = hashPredchodcu;
+	}
+	
 	public List<Vozidlo> getPoleVozidiel() {
 		return poleVozidiel;
 	}
 	public void setPoleVozidiel(List<Vozidlo> poleVozidiel) {
 		this.poleVozidiel = poleVozidiel;
 	}
-	public Uzol getPredchodza() {
-		return predchodza;
-	}
-	public void setPredchodza(Uzol predchodza) {
-		this.predchodza = predchodza;
-	}
-	public String getPoslednePouzityOperator() {
+	public StringBuilder getPoslednePouzityOperator() {
 		return poslednePouzityOperator;
 	}
-	public void setPoslednePouzityOperator(String poslednePouzityOperator) {
+	public void setPoslednePouzityOperator(StringBuilder poslednePouzityOperator) {
 		this.poslednePouzityOperator = poslednePouzityOperator;
+	}
+
+	public int getHashStavu() {
+		return hashStavu;
+	}
+
+	public void setHashStavu(int hashStavu) {
+		this.hashStavu = hashStavu;
+	}
+
+	public int getHashPredchodcu() {
+		return hashPredchodcu;
+	}
+
+	public void setHashPredchodcu(int hashPredchodcu) {
+		this.hashPredchodcu = hashPredchodcu;
 	}
 	
 	public int getHashCode() {
@@ -51,10 +56,6 @@ public class Uzol {
 		return hashArray;
 	}
 	
-	@Override
-	public int hashCode() {
-	    return Objects.hash(poleVozidiel);
-	}
 	
 	public void vypisVozidiel() {
 		for(int i=0; i<poleVozidiel.size(); i++) {
@@ -65,4 +66,5 @@ public class Uzol {
 		}
 		System.out.println("---------");
 	}
+
 }
