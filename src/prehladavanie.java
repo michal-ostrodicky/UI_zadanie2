@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+
 import java.util.Queue;
-import java.util.Stack;
+
 
 public class prehladavanie{
+	
 	
 	public static void main(String[] args)  {
 		List<Vozidlo> zaciatokVozidla = new ArrayList<Vozidlo>();
@@ -15,8 +16,8 @@ public class prehladavanie{
 		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 2, 'h');
 		Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove",2 ,1 ,1 , 'h');
 		Vozidlo zlteVozidlo = new Vozidlo("Zlte", 3, 2, 1, 'v');
-		// ZO ZADANIA Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
-		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,3 , 'h');
+		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
+		//Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,3 , 'h');
 		Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
 		
 		Vozidlo svetlomodreVozidlo = new Vozidlo("Svetlomodre", 3, 6, 3, 'h');
@@ -33,28 +34,30 @@ public class prehladavanie{
 		 */
 		
 		zaciatokVozidla.add(cerveneVozidlo);
-		/*zaciatokVozidla.add(oranzoveVozidlo);
-		zaciatokVozidla.add(zlteVozidlo);*/
-		zaciatokVozidla.add(fialoveVozidlo);
+		//zaciatokVozidla.add(oranzoveVozidlo);
+		zaciatokVozidla.add(zlteVozidlo);
+		//zaciatokVozidla.add(fialoveVozidlo);
 		zaciatokVozidla.add(zeleneVozidlo);
 		zaciatokVozidla.add(svetlomodreVozidlo);
-		/*zaciatokVozidla.add(siveVozidlo);
-		zaciatokVozidla.add(tmavomodreVozidlo);*/
+		zaciatokVozidla.add(siveVozidlo);
+		//zaciatokVozidla.add(tmavomodreVozidlo);*/
 		
-		
+//		@SuppressWarnings("deprecation")
+//		MultiValueMap<Integer, Uzol> mapaStavov = new MultiValueMap<Integer, Uzol>();
 		
 		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,null);
 		pociatocnyStav.setHashStavu(pociatocnyStav.getHashStavu());
 		 
-		
-		
-		//pociatocnyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
-		
+
 		
 		Queue<Uzol> radNespracovanych = new LinkedList<>();
-	    HashMap<Integer, Uzol> vytvoreneUzly = new HashMap<Integer, Uzol>();
+		Map<Integer, ArrayList<Uzol>> vytvoreneUzly = new HashMap<Integer, ArrayList<Uzol>>();
+		
+		
 	    radNespracovanych.add(pociatocnyStav);
-	    vytvoreneUzly.put(pociatocnyStav.getHashCode(), pociatocnyStav);
+	    ArrayList<Uzol> zoznamUzlovNaHash = new ArrayList<Uzol>();
+	    zoznamUzlovNaHash.add(pociatocnyStav);
+	    vytvoreneUzly.put(pociatocnyStav.getHashCode(), zoznamUzlovNaHash);
 	    //System.out.println("Hash kod pre tento stav> " + pociatocnyStav.getHashCode());
 	    
 	    int o = 0;
@@ -64,19 +67,27 @@ public class prehladavanie{
 	 	    if (o == 2) {
 	 	    	break;
 	 	    }*/
-	    	System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size());
+	    	System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size()+ " " + o++);
 	        Uzol sucasnyUzol = radNespracovanych.remove();
 	        int[] mapa = new int[50];
 	       
 	 	    vytvorPole(sucasnyUzol,mapa);
-	        System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
+	        //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
 	        //Zistenie ci je najdena cielova pozicia       
 	        if (porovnajCielovy(sucasnyUzol)){
-	        	
+	        	vytvorPole(sucasnyUzol,mapa);
 	        	sucasnyUzol.vypisVozidiel();
-
-	        	System.out.println("**** Postupnost operatorov: ****" );
-	        	while(sucasnyUzol.getHashPredchodcu() != 0) {      		
+	        	String stringovaMapa = new String();
+	        	for (int j = 0; j<36; j++) {
+	   	    	 if ( j % 6 == 0) {
+	   	    		 stringovaMapa = stringovaMapa +"\n";
+	   	    	 }
+	   	    	 stringovaMapa = stringovaMapa + mapa[j] + ", ";
+	   	    	 
+	   	     }
+	   	    	System.out.println(stringovaMapa);
+	        	//System.out.println("**** Postupnost operatorov: ****" );
+	        	/*while(sucasnyUzol.getHashPredchodcu() != 0) {      		
 	        		System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
 	        		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
 	        		int hash = sucasnyUzol.getHashPredchodcu();
@@ -84,7 +95,7 @@ public class prehladavanie{
 	        		sucasnyUzol = vytvoreneUzly.get(hash);
 	        		
 	        	}
-	        	System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
+	        	System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());*/
 	        	break;
 	        	/*if (maxKroky > pocetKrokov ) {
 	        		save = vypis;
@@ -118,27 +129,30 @@ public class prehladavanie{
 	            					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
 	            					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 6)) { 
 	            						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
-	            							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	            								//novyStav.getPoleVozidiel().get(0).vypisDetailyVozidla();
-	            								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-	            								if (!zistiTotoznost(porovnavaci,novyStav)) {
-	            									radNespracovanych.add(novyStav);
-	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-	            								} 
-	            							} else {
-	            								radNespracovanych.add(novyStav);
-	            								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-	            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-	            								//novyStav.vypisVozidiel();
-	            								
-	            							}
-
+	            						pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//	            							if(mapaStavov.containsKey(novyStav.getHashCode())){
+//	            								List <Uzol> kolekciaStavovRovnakeHash = (List<Uzol>) mapaStavov.getCollection(novyStav.getHashCode());
+//	            							
+//	            								for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//	            									if (!zistiTotoznost(porovnavaci,novyStav)) {
+//		            									radNespracovanych.add(novyStav);
+//		            									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////		            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////			            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////			            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////		            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//		            								}  
+//	            								}
+//	            							} else {
+//		            								radNespracovanych.add(novyStav);
+//		            								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////		            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////		            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//		            								//novyStav.vypisVozidiel();
+//		            								
+//		            							}
 	            					} else {
 	            						break;
 	            					}
@@ -150,26 +164,31 @@ public class prehladavanie{
 	            			
 	            				if ((indexVPoli-j > 0) && (mapa[indexVPoli-j] != 1) && ((suradnicaX-j) >= 1)) {
 	            							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
-	            							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	            								//novyStav.vypisVozidiel();
-
-	            								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-	            								if (!zistiTotoznost(porovnavaci,novyStav)) {
-	            									radNespracovanych.add(novyStav);
-	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-	            								} 
-	            							} else {
-	            								radNespracovanych.add(novyStav);
-	            								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-	            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-	            								//novyStav.vypisVozidiel();
-	            							}
+	            							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//	            							if(mapaStavov.containsKey(novyStav.getHashCode())){
+//	            								Collection <Uzol> kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode());
+//	            								
+//	            								for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//	            									if (!zistiTotoznost(porovnavaci,novyStav)) {
+//		            									radNespracovanych.add(novyStav);
+//		            									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////		            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////			            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////			            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////		            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//		            								}  
+//	            								}
+//	            							} else {
+//		            								radNespracovanych.add(novyStav);
+//		            								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////		            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////		            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//		            								//novyStav.vypisVozidiel();
+//		            								
+//		            							}
+	            							
 	            					} else {
 	            						break;
 	            					}
@@ -181,26 +200,31 @@ public class prehladavanie{
     					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
     					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 5)) { // namiesto 5 je tu 6
     						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
-    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-    								if (!zistiTotoznost(porovnavaci,novyStav)) {
-    									radNespracovanych.add(novyStav);
-    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-        										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-    								}
-
-    							} else {
-    								radNespracovanych.add(novyStav);
-    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-    								//novyStav.vypisVozidiel();
-    							}
+    						pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//    						if(mapaStavov.containsKey(novyStav.getHashCode())){
+//								Collection <Uzol> kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode());
+//								
+//							
+//								for (Iterator<Uzol> porovnavaci = kolekciaStavovRovnakeHash.iterator(); porovnavaci.hasNext();) {
+//									if (!zistiTotoznost(porovnavaci.next(),novyStav)) {
+//    									radNespracovanych.add(novyStav);
+//    									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////        										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//    								}  
+//								}
+//							} else {
+//    								radNespracovanych.add(novyStav);
+//    								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//    								//novyStav.vypisVozidiel();
+//    								
+//    							}
     					} else {
     						break;
     					}
@@ -212,24 +236,30 @@ public class prehladavanie{
 			    				if ((mapa[indexVPoli-j] != 1) && ((suradnicaX-j)) >= 1) {
 			    					
 			    							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
-			    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-			    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-	            								if (!zistiTotoznost(porovnavaci,novyStav)) {
-	            									radNespracovanych.add(novyStav);
-	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-	            											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-	            								}
-			    							} else {
-			    								radNespracovanych.add(novyStav);
-			    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-			    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-			    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-			    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-			    								//novyStav.vypisVozidiel();
-			    							}
+			    							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//			    							if(mapaStavov.containsKey(novyStav.getHashCode())){
+//	            								Collection <Uzol> kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode());
+//	            								
+//	            								for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//	            									if (!zistiTotoznost(porovnavaci,novyStav)) {
+//		            									radNespracovanych.add(novyStav);
+//		            									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////		            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////			            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////			            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////		            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//		            								}  
+//	            								}
+//	            							} else {
+//		            								radNespracovanych.add(novyStav);
+//		            								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////		            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////		            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//		            								//novyStav.vypisVozidiel();
+//		            								
+//		            							}
 			    				} else {
 			    					break;
 			    				}
@@ -244,25 +274,30 @@ public class prehladavanie{
 		            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
 		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
 	        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
-	        							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-		    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-	        								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-            								if (!zistiTotoznost(porovnavaci,novyStav)) {
-            									radNespracovanych.add(novyStav);
-            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-            											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode());
-            								}
-		    							} else {
-		    								radNespracovanych.add(novyStav);
-		    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-		    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-		    								//novyStav.vypisVozidiel();			
-		    							}
+	        							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//	        							if(mapaStavov.containsKey(novyStav.getHashCode())){
+//            								Collection <Uzol> kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode());
+//            								
+//            								for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//            									if (!zistiTotoznost(porovnavaci,novyStav)) {
+//	            									radNespracovanych.add(novyStav);
+//	            									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//	            								}  
+//            								}
+//            							} else {
+//	            								radNespracovanych.add(novyStav);
+//	            								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////	            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//	            								//novyStav.vypisVozidiel();
+//	            								
+//	            							}
 		        					} else {
 		        						break;
 		        					}
@@ -272,25 +307,30 @@ public class prehladavanie{
 		            		
 		            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
 		            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
-    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-    								if (!zistiTotoznost(porovnavaci,novyStav)) {
-    									radNespracovanych.add(novyStav);
-    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-    											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-    								}
-    							} else {
-    								radNespracovanych.add(novyStav);
-    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-    								//novyStav.vypisVozidiel();			
-    							}
+		            			pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//		            			if(mapaStavov.containsKey(novyStav.getHashCode())){
+//    								Collection <Uzol> kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode());
+//    								
+//    								for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//    									if (!zistiTotoznost(porovnavaci,novyStav)) {
+//        									radNespracovanych.add(novyStav);
+//        									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////        									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////        									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//        								}  
+//    								}
+//    							} else {
+//        								radNespracovanych.add(novyStav);
+//        								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////        								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////        										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////        								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//        								//novyStav.vypisVozidiel();
+//        								
+//        							}
 		            		}
 		            		else {
 	            				break;
@@ -305,25 +345,30 @@ public class prehladavanie{
 		            	for(int j=1; j<4; j++) { //vytvaranie posunom dole
 		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 5) {
 	        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
-	        							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-	        								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-	        								
-	        								if (!zistiTotoznost(porovnavaci,novyStav)) {
-	        									radNespracovanych.add(novyStav);
-	        									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-	        											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-	        									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-	        								}
-		    							} else {
-		    								radNespracovanych.add(novyStav);
-		    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-		    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-		    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-		    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-		    								//novyStav.vypisVozidiel();			
-		    							}
+	        							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//	        							if(mapaStavov.containsKey(novyStav.getHashCode())){
+//            								Collection <Uzol> kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode());
+//            								
+//            								for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//            									if (!zistiTotoznost(porovnavaci,novyStav)) {
+//	            									radNespracovanych.add(novyStav);
+//	            									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////	            									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////		            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////		            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////	            									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//	            								}  
+//            								}
+//            							} else {
+//	            								radNespracovanych.add(novyStav);
+//	            								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////	            								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////	            										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////	            										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////	            								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//	            								//novyStav.vypisVozidiel();
+//	            								
+//	            							}
 		        					} else {
 		        						break;
 		        					}
@@ -334,25 +379,32 @@ public class prehladavanie{
 		            	for(int j=1; j<4; j++) { //vytvaranie posunom hore
 		            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
 		            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
-    							if(vytvoreneUzly.containsKey(novyStav.getHashCode())){
-    								//System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + " evidujeme!");
-    								Uzol porovnavaci = vytvoreneUzly.get(novyStav.getHashCode());
-    								if (!zistiTotoznost(porovnavaci,novyStav)) {
-    									radNespracovanych.add(novyStav);
-    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-    											+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-    								}
-    							} else {
-    								radNespracovanych.add(novyStav);
-    								vytvoreneUzly.put(novyStav.getHashCode(), novyStav);
-    								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
-    										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY()
-    										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-    								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
-    								//novyStav.vypisVozidiel();			
-    							}
+		            			pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav);
+//		            			if(mapaStavov.containsKey(novyStav.getHashCode())){
+//		            				
+//		            				Object[] kolekciaStavovRovnakeHash = mapaStavov.getCollection(novyStav.getHashCode()).toArray();
+//		            				
+//		            				
+//		            				for (Uzol porovnavaci : kolekciaStavovRovnakeHash) {
+//										if (!zistiTotoznost(porovnavaci.next(),novyStav)) {
+//	    									radNespracovanych.add(novyStav);
+//	    									mapaStavov.put(novyStav.getHashCode(), novyStav);
+////	    									System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////	        										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////	        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////	    									System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//	    								}  
+//									}
+//    							} else {
+//        								radNespracovanych.add(novyStav);
+//        								mapaStavov.put(novyStav.getHashCode(), novyStav);
+////        								System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+////        										+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+////        										+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+////        								System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//        								//novyStav.vypisVozidiel();
+//        								
+//        							}
 		            		}
 		            		else {
 	            				break;
@@ -373,7 +425,45 @@ public class prehladavanie{
 	    	
 	    }*/   
 	}
-	    
+	
+	//funkcia na pridanie uzla do mapy
+	public static void pridanieUzlaDoMapy(Map<Integer, ArrayList<Uzol>> vytvoreneUzly, Queue<Uzol> radNespracovanych, Uzol novyStav) {
+		   ArrayList<Uzol> tempList = null;
+		   
+		   int key = novyStav.getHashCode();
+		   
+		   if (vytvoreneUzly.containsKey(novyStav.getHashCode())) {
+		      tempList = vytvoreneUzly.get(key);
+		      
+		      if(tempList == null) {
+			         tempList = new ArrayList<Uzol>();
+			  }
+		      
+		      for (Uzol porovnavaci : tempList) {
+		    	  if (!zistiTotoznost(porovnavaci,novyStav)) {
+		    		  tempList.add(novyStav);  
+				      radNespracovanych.add(novyStav); 
+//						System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+//						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+//						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+//						System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+				      break;
+		    	}
+		      }	   
+		   } else {
+			  radNespracovanych.add(novyStav);
+//			  System.out.println("Pridal som novy stav autom " + sucasnyUzol.getPoleVozidiel().get(i).getFarba() + " x=" 
+//						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+//						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
+//			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//			  novyStav.vypisVozidiel();
+		      tempList = new ArrayList<Uzol>();
+		      tempList.add(novyStav);               
+		   }
+		   vytvoreneUzly.put(key,tempList);
+		}
+	
+	
 	//funkcia na porovnanie cieloveho stavu, ak nulte(cervene) auto dosiahne suradnicu x = 5, nasli sme konecny stav
 	public static boolean porovnajCielovy(Uzol uzol) {
 		if(uzol.getPoleVozidiel().get(0).getSuradnicaX() == 5){
@@ -531,14 +621,14 @@ public class prehladavanie{
 		    }
 		 }
 		
-	     for (int j = 0; j<36; j++) {
+	    /* for (int j = 0; j<36; j++) {
 	    	 if ( j % 6 == 0) {
 	    		 stringovaMapa = stringovaMapa +"\n";
 	    	 }
 	    	 stringovaMapa = stringovaMapa + mapa[j] + ", ";
 	    	 
 	     }
-	    	System.out.println(stringovaMapa);
+	    	System.out.println(stringovaMapa);*/
 		 
 	 }
 	
