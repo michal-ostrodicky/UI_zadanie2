@@ -51,7 +51,7 @@ public class Uzol {
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			Object[] x = {poleVozidiel.get(i).getSuradnicaX(),poleVozidiel.get(i).getSuradnicaY(), 
 					poleVozidiel.get(i).getVelkost(),poleVozidiel.get(i).getPosun(),poleVozidiel.get(i).getFarba()};
-			hashArray = hashArray*31 + Arrays.hashCode(x);
+			hashArray = hashArray*31 + Arrays.hashCode(x)*i;
 			
 		}
 		return hashArray;

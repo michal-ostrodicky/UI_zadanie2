@@ -35,7 +35,7 @@ public class prehladavanie{
 		
 		zaciatokVozidla.add(cerveneVozidlo);
 		//zaciatokVozidla.add(oranzoveVozidlo);
-		zaciatokVozidla.add(zlteVozidlo);
+		//zaciatokVozidla.add(zlteVozidlo);
 		zaciatokVozidla.add(fialoveVozidlo);
 		zaciatokVozidla.add(zeleneVozidlo);
 		zaciatokVozidla.add(svetlomodreVozidlo);
@@ -137,8 +137,7 @@ public class prehladavanie{
 	            		
 	            		indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
 	            		for(int j=1; j<5; j++) { //vytvaranie posunom vlavo	
-	            					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava
-	            			
+	            					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava  			
 	            				if ((indexVPoli-j > 0) && (mapa[indexVPoli-j] != 1) && ((suradnicaX-j) >= 1)) {
 	            							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
 	            							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
@@ -153,7 +152,7 @@ public class prehladavanie{
 	            	indexVPoli = (suradnicaY-1)*6 + suradnicaX + velkost - 2;
 	            	for(int j=1; j<4; j++) { //vytvaranie posunom vpravo
     					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
-    					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 5)) { // namiesto 5 je tu 6
+    					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 5)) { 
     						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
     						pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
     					} else {
