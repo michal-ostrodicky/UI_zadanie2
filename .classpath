@@ -2,7 +2,5 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Michal/Desktop/commons-collections4-4.1/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Michal/Desktop/commons-collections4-4.1/commons-collections4-4.1-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

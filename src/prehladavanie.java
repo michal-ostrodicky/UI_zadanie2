@@ -34,16 +34,14 @@ public class prehladavanie{
 		 */
 		
 		zaciatokVozidla.add(cerveneVozidlo);
-		//zaciatokVozidla.add(oranzoveVozidlo);
-		//zaciatokVozidla.add(zlteVozidlo);
+		zaciatokVozidla.add(oranzoveVozidlo);
+		zaciatokVozidla.add(zlteVozidlo);
 		zaciatokVozidla.add(fialoveVozidlo);
 		zaciatokVozidla.add(zeleneVozidlo);
 		zaciatokVozidla.add(svetlomodreVozidlo);
-		//zaciatokVozidla.add(siveVozidlo);
-		//zaciatokVozidla.add(tmavomodreVozidlo);*/
+		zaciatokVozidla.add(siveVozidlo);
+		zaciatokVozidla.add(tmavomodreVozidlo);
 		
-//		@SuppressWarnings("deprecation")
-//		MultiValueMap<Integer, Uzol> mapaStavov = new MultiValueMap<Integer, Uzol>();
 		
 		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,null);
 		pociatocnyStav.setHashStavu(pociatocnyStav.getHashStavu());
@@ -64,9 +62,9 @@ public class prehladavanie{
 
 	    while(!radNespracovanych.isEmpty()){
 	    	o++;
-	 	    if (o == 2) {
+	 	    /*if (o == 2) {
 	 	    	break;
-	 	    }
+	 	    }*/
 	    	System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size()+ " " + o);
 	        Uzol sucasnyUzol = radNespracovanych.remove();
 	        int[] mapa = new int[50];
@@ -178,7 +176,7 @@ public class prehladavanie{
 	            else if (smer == 'v' ) { // OPERACIE  HORE & DOLE
 	            	if (velkost == 2) {
 			            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 6; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
-		            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
+		            	for(int j=1; j<5; j++) { //vytvaranie posunom dole
 		            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
 	        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
 	        							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
@@ -189,7 +187,7 @@ public class prehladavanie{
 		            	indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
 		            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
 		            		
-		            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
+		            		if ((indexVPoli-j*6 >= 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
 		            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
 		            			pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 		            		}
@@ -215,7 +213,7 @@ public class prehladavanie{
 
             			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
 		            	for(int j=1; j<4; j++) { //vytvaranie posunom hore
-		            		if ((indexVPoli-j*6 > 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
+		            		if ((indexVPoli-j*6 >= 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
 		            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
 		            			pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 		            		}
