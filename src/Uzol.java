@@ -3,17 +3,19 @@ import java.util.List;
 
 public class Uzol {
 	private List<Vozidlo> poleVozidiel;
-	private int hashStavu;
-	private int hashPredchodcu;
-	
-
+	private long hashStavu;
+	private long hashPredchodcu;
+	private long idStavu;
+	private long idPredchodcu;
 	private StringBuilder poslednePouzityOperator;
 	
-	public Uzol(List<Vozidlo> poleVozidiel, int hashPredchodcu, int hashStavu  , StringBuilder builder ) {
+	public Uzol(List<Vozidlo> poleVozidiel, long hashPredchodcu, long hashStavu, long idStavu, long idPredchodcu, StringBuilder builder ) {
 		this.poleVozidiel = poleVozidiel;
 		this.poslednePouzityOperator = builder;
 		this.hashStavu = hashStavu;
 		this.hashPredchodcu = hashPredchodcu;
+		this.idStavu = idStavu;
+		this.idPredchodcu = idPredchodcu;
 	}
 	
 	public List<Vozidlo> getPoleVozidiel() {
@@ -29,24 +31,41 @@ public class Uzol {
 		this.poslednePouzityOperator = poslednePouzityOperator;
 	}
 
-	public int getHashStavu() {
+	public long getHashStavu() {
 		return hashStavu;
 	}
 
-	public void setHashStavu(int hashStavu) {
+	public void setHashStavu(long hashStavu) {
 		this.hashStavu = hashStavu;
 	}
 
-	public int getHashPredchodcu() {
+	public long getHashPredchodcu() {
 		return hashPredchodcu;
 	}
 
-	public void setHashPredchodcu(int hashPredchodcu) {
+	public void setHashPredchodcu(long hashPredchodcu) {
 		this.hashPredchodcu = hashPredchodcu;
 	}
 	
-	public int getHashCode() {
-		int hashArray = 17;
+	public long getIdStavu() {
+		return idStavu;
+	}
+
+	public void setIdStavu(long idStavu) {
+		this.idStavu = idStavu;
+	}
+	
+	
+	public long getIdPredchodcu() {
+		return idPredchodcu;
+	}
+
+	public void setIdPredchodcu(long idPredchodcu) {
+		this.idPredchodcu = idPredchodcu;
+	}
+	
+	public long getHashCode() {
+		long hashArray = 17;
 		
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			Object[] x = {poleVozidiel.get(i).getSuradnicaX(),poleVozidiel.get(i).getSuradnicaY(), 
@@ -57,7 +76,8 @@ public class Uzol {
 		return hashArray;
 	}
 	
-	
+
+
 	public void vypisVozidiel() {
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			System.out.println("farba = " + poleVozidiel.get(i).getFarba());

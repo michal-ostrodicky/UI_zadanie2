@@ -9,7 +9,8 @@ import java.util.Queue;
 
 public class prehladavanie{
 	
-	
+	static long idAktualnehoStavu = 0;
+
 	public static void main(String[] args)  {
 		List<Vozidlo> zaciatokVozidla = new ArrayList<Vozidlo>();
 		//Vytvaranie vozidiel do vstupneho stavu
@@ -43,13 +44,13 @@ public class prehladavanie{
 		zaciatokVozidla.add(tmavomodreVozidlo);
 		
 		
-		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,null);
+		Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,idAktualnehoStavu++,0, null);
 		pociatocnyStav.setHashStavu(pociatocnyStav.getHashStavu());
 		 
 
 		
 		Queue<Uzol> radNespracovanych = new LinkedList<>();
-		Map<Integer, ArrayList<Uzol>> vytvoreneUzly = new HashMap<Integer, ArrayList<Uzol>>();
+		Map<Long, ArrayList<Uzol>> vytvoreneUzly = new HashMap<Long, ArrayList<Uzol>>();
 		
 		
 	    radNespracovanych.add(pociatocnyStav);
@@ -62,10 +63,10 @@ public class prehladavanie{
 
 	    while(!radNespracovanych.isEmpty()){
 	    	o++;
-	 	    /*if (o == 2) {
+	 	    /*if (o == 3) {
 	 	    	break;
 	 	    }*/
-	    	System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size()+ " " + o);
+	    	//System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size()+ " " + o);
 	        Uzol sucasnyUzol = radNespracovanych.remove();
 	        int[] mapa = new int[50];
 	       
@@ -75,25 +76,32 @@ public class prehladavanie{
 	        if (porovnajCielovy(sucasnyUzol)){
 	        	vytvorPole(sucasnyUzol,mapa);
 	        	sucasnyUzol.vypisVozidiel();
-	        	String stringovaMapa = new String();
-	        	for (int j = 0; j<36; j++) {
-	   	    	 if ( j % 6 == 0) {
-	   	    		 stringovaMapa = stringovaMapa +"\n";
-	   	    	 }
-	   	    	 stringovaMapa = stringovaMapa + mapa[j] + ", ";
-	   	    	 
-	   	     }
-	   	    	System.out.println(stringovaMapa);
-	        	//System.out.println("**** Postupnost operatorov: ****" );
-	        	/*while(sucasnyUzol.getHashPredchodcu() != 0) {      		
-	        		System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
+	        	
+	        	System.out.println("**** Postupnost operatorov: ****" );
+	        	System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
+	       int q = 0;
+	        	while(sucasnyUzol.getIdPredchodcu() != 0) {      		
+	        		q++;
 	        		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
-	        		int hash = sucasnyUzol.getHashPredchodcu();
+	        		long hash = sucasnyUzol.getHashPredchodcu();
+	        		long idPredchodzu = sucasnyUzol.getIdPredchodcu();
 	        		//System.out.println("Dalsi " + hash);
-	        		sucasnyUzol = vytvoreneUzly.get(hash);
-	        		
+	        		zoznamUzlovNaHash = null;
+	        		zoznamUzlovNaHash = vytvoreneUzly.get(hash);
+
+	        		for(Uzol aktualnyUzolvZozname: zoznamUzlovNaHash) {
+	    	   	    	//vytvorPole(aktualnyUzolvZozname,mapa);	
+	        			if(aktualnyUzolvZozname.getIdStavu() == idPredchodzu) {
+	        				System.out.println(aktualnyUzolvZozname.getHashStavu() + " "+ aktualnyUzolvZozname.getPoslednePouzityOperator());
+	        				sucasnyUzol = aktualnyUzolvZozname;
+	        				break;
+	        			}
+	        		}
+	        		/*if (q == 2) {
+		 	    	break;
+		 	    }*/
 	        	}
-	        	System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());*/
+	        	//System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
 	        	break;
 	        	/*if (maxKroky > pocetKrokov ) {
 	        		save = vypis;
@@ -238,10 +246,10 @@ public class prehladavanie{
 	}
 	
 	//funkcia na pridanie uzla do mapy
-	public static void pridanieUzlaDoMapy(Map<Integer, ArrayList<Uzol>> vytvoreneUzly, Queue<Uzol> radNespracovanych, Uzol novyStav,Uzol sucasnyStav,int i) {
+	public static void pridanieUzlaDoMapy(Map<Long, ArrayList<Uzol>> vytvoreneUzly, Queue<Uzol> radNespracovanych, Uzol novyStav,Uzol sucasnyStav,int i) {
 		   ArrayList<Uzol> tempList = null;
 		   
-		   int key = novyStav.getHashCode();
+		   long key = novyStav.getHashCode();
 		   
 		   if (vytvoreneUzly.containsKey(novyStav.getHashCode())) {
 		      tempList = vytvoreneUzly.get(key);
@@ -254,19 +262,21 @@ public class prehladavanie{
 		    	  if (!zistiTotoznost(porovnavaci,novyStav)) {
 		    		  tempList.add(novyStav);  
 				      radNespracovanych.add(novyStav); 
-						System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
-						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-						System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//						System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
+//						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+//						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
+//						+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
+//						System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
 				      break;
 		    	}
 		      }	   
 		   } else {
 			  radNespracovanych.add(novyStav);
-			  System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
-						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu());
-			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//			  System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
+//						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+//						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
+//						+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
+//			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
 			  //novyStav.vypisVozidiel();
 		      tempList = new ArrayList<Uzol>();
 		      tempList.add(novyStav);               
@@ -286,9 +296,9 @@ public class prehladavanie{
 	
 	public static Uzol operaciaVpravo(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-		int hashPredchodzu;
-		hashPredchodzu = stav.getHashStavu(); 
-
+		long hashPredchodzu = stav.getHashStavu(); 
+		long idPredchodzu = stav.getIdStavu();
+		
 		StringBuilder builder = new StringBuilder();
 		builder.append("VPRAVO(");
 		builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
@@ -296,17 +306,18 @@ public class prehladavanie{
 		builder.append(posun);
 		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
 		novyStav.setHashStavu(novyStav.getHashCode());
+		
 		return novyStav;
 	}
 	
 	public static Uzol operaciaVlavo(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
 		
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-		int hashPredchodzu;
-		hashPredchodzu = stav.getHashStavu(); 
+		long hashPredchodzu = stav.getHashStavu(); 
+		long idPredchodzu = stav.getIdStavu();
 
 		
 		StringBuilder builder = new StringBuilder();
@@ -316,7 +327,7 @@ public class prehladavanie{
 		builder.append(posun);
 		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
 		novyStav.setHashStavu(novyStav.getHashCode());
 		
@@ -326,8 +337,8 @@ public class prehladavanie{
 	public static Uzol operaciaDole(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
 		
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-		int hashPredchodzu;
-		hashPredchodzu = stav.getHashStavu(); 
+		long hashPredchodzu = stav.getHashStavu(); 
+		long idPredchodzu = stav.getIdStavu();
 
 		
 		StringBuilder builder = new StringBuilder();
@@ -337,7 +348,7 @@ public class prehladavanie{
 		builder.append(posun);
 		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
 		novyStav.setHashStavu(novyStav.getHashCode());
 		
@@ -347,8 +358,8 @@ public class prehladavanie{
 	public static Uzol operaciaHore(Uzol stav, int indexVozidla, int posunNaPoziciu, int posun) {
 		
 		List<Vozidlo> novoVytvorene = copyArrayList(stav);
-		int hashPredchodzu;
-		hashPredchodzu = stav.getHashStavu(); 
+		long hashPredchodzu = stav.getHashStavu(); 
+		long idPredchodzu = stav.getIdStavu();
 
 		
 		StringBuilder builder = new StringBuilder();
@@ -358,7 +369,7 @@ public class prehladavanie{
 		builder.append(posun);
 		builder.append(")");
 		
-		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0, builder);
+		Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 		novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
 		novyStav.setHashStavu(novyStav.getHashCode());
 		
