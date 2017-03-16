@@ -4,19 +4,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 
-public class BFS {
+public class DFS {
 
 	static long idAktualnehoStavu = 0;
-
-	public BFS(List<Vozidlo> zaciatokVozidla) {
+	boolean riesenie = false;
+	StringBuilder vypis;
+	StringBuilder konecnyVypis = new StringBuilder(); 
+	
+	
+	public DFS(List<Vozidlo> zaciatokVozidla) {
 		
 	Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,idAktualnehoStavu++,0, null);
 	pociatocnyStav.setHashStavu(pociatocnyStav.getHashCode());
-	System.out.println("Hash prveho " + pociatocnyStav.getHashCode());
+	//System.out.println("Hash prveho " + pociatocnyStav.getHashCode());
 
 	
-	Queue<Uzol> radNespracovanych = new LinkedList<>();
+	Stack<Uzol> radNespracovanych = new Stack<>();
 	Map<Long, ArrayList<Uzol>> vytvoreneUzly = new HashMap<Long, ArrayList<Uzol>>();
 	
 	
@@ -27,48 +32,64 @@ public class BFS {
     //System.out.println("Hash kod pre tento stav> " + pociatocnyStav.getHashCode());
     
     int o = 0;
-
+    int minPocetOperatorov = 9999999;
+    
     while(!radNespracovanych.isEmpty()){
     	o++;
  	    /*if (o == 4) {
  	    	break;
  	    }*/
-    	System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size()+ " " + o);
-        Uzol sucasnyUzol = radNespracovanych.remove();
+    	//System.out.println("Velkost Stacku je pred vyberom " + radNespracovanych.size()+ " " + o);
+        Uzol sucasnyUzol = radNespracovanych.pop();
         int[] mapa = new int[50];
        
  	    vytvorPole(sucasnyUzol,mapa);
         //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
+ 	    
+ 	    
         //Zistenie ci je najdena cielova pozicia       
         if (porovnajCielovy(sucasnyUzol)){
-        	vytvorPole(sucasnyUzol,mapa);
-        	sucasnyUzol.vypisVozidiel();
+        	riesenie = true;
+        	//vytvorPole(sucasnyUzol,mapa);
+        	//sucasnyUzol.vypisVozidiel();
+        	int pocetOperatorovkCielu = 0;
         	
-        	System.out.println("**** Postupnost operatorov: ****" );
-        	System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
-       int q = 0;
-        	while(sucasnyUzol.getIdPredchodcu() != 0) {      		
-        		q++;
+        	Uzol temp = sucasnyUzol;
+        	
+        	vypis = new StringBuilder();
+        	vypis.append(sucasnyUzol.getPoslednePouzityOperator());
+        	
+        	while(sucasnyUzol.getIdPredchodcu() != 0) { 
         		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
         		long hash = sucasnyUzol.getHashPredchodcu();
         		long idPredchodzu = sucasnyUzol.getIdPredchodcu();
-        		//System.out.println("Dalsi " + hash);
+        		
         		zoznamUzlovNaHash = null;
         		zoznamUzlovNaHash = vytvoreneUzly.get(hash);
 
         		for(Uzol aktualnyUzolvZozname: zoznamUzlovNaHash) {
     	   	    	//vytvorPole(aktualnyUzolvZozname,mapa);	
         			if(aktualnyUzolvZozname.getIdStavu() == idPredchodzu) {
-        				System.out.println(aktualnyUzolvZozname.getHashStavu() + " "+ aktualnyUzolvZozname.getPoslednePouzityOperator());
+        				pocetOperatorovkCielu++;
+        				//System.out.println(aktualnyUzolvZozname.getHashStavu() + " "+ aktualnyUzolvZozname.getPoslednePouzityOperator());
+        				vypis.append(aktualnyUzolvZozname.getPoslednePouzityOperator());
         				sucasnyUzol = aktualnyUzolvZozname;
         				break;
         			}
         		}
       
         	}
+        	if(pocetOperatorovkCielu <= minPocetOperatorov) {
+        		//System.out.println("**** Postupnost operatorov jedneho riesenia: ****" );
+        		minPocetOperatorov = pocetOperatorovkCielu;
+        		konecnyVypis.append(vypis);
+        		konecnyVypis.append("\n");
+        		//System.out.println(vypis + "\n");
+        		vypis = new StringBuilder();
+        	}
         	//System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
-        	break;
         	
+        	sucasnyUzol = temp;
         	
         }
         
@@ -200,14 +221,18 @@ public class BFS {
   //  System.out.println("***** Pocet " + maxKroky);
     //System.out.println(save);
 
-    if(radNespracovanych.isEmpty()) {
-    	System.out.println("*** Nenasiel som riesenie!! ***");
+    if(riesenie) {
+    	System.out.println("**** Postupnost operatorov jedneho riesenia: ****" );
+		konecnyVypis.append(vypis);
+		System.out.println(konecnyVypis);
     	
+    } else {
+    	System.out.println("*** Nenasiel som riesenie!! ***");
     }
 }
 
 	//funkcia na pridanie uzla do mapy
-	public static void pridanieUzlaDoMapy(Map<Long, ArrayList<Uzol>> vytvoreneUzly, Queue<Uzol> radNespracovanych, Uzol novyStav,Uzol sucasnyStav,int i) {
+	public static void pridanieUzlaDoMapy(Map<Long, ArrayList<Uzol>> vytvoreneUzly, Stack<Uzol> radNespracovanych, Uzol novyStav,Uzol sucasnyStav,int i) {
 		   ArrayList<Uzol> tempList = null;
 		   
 		   long key = novyStav.getHashCode();
@@ -264,7 +289,7 @@ public class BFS {
 		//funkcia na porovnanie cieloveho stavu, ak nulte(cervene) auto dosiahne suradnicu x = 5, nasli sme konecny stav
 		public static boolean porovnajCielovy(Uzol uzol) {
 			if(uzol.getPoleVozidiel().get(0).getSuradnicaX() == 5){
-		    	System.out.println("Nasli sme cielovu poziciu");
+		    	//System.out.println("Nasli sme cielovu poziciu");
 		    	return true;
 		    }
 			return false;		
@@ -280,7 +305,7 @@ public class BFS {
 			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 			builder.append(", ");
 			builder.append(posun);
-			builder.append(")");
+			builder.append(") ");
 			
 			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
@@ -301,7 +326,7 @@ public class BFS {
 			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 			builder.append(", ");
 			builder.append(posun);
-			builder.append(")");
+			builder.append(") ");
 			
 			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
@@ -322,7 +347,7 @@ public class BFS {
 			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 			builder.append(", ");
 			builder.append(posun);
-			builder.append(")");
+			builder.append(") ");
 			
 			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
@@ -343,7 +368,7 @@ public class BFS {
 			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
 			builder.append(", ");
 			builder.append(posun);
-			builder.append(")");
+			builder.append(") ");
 			
 			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
 			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
@@ -431,4 +456,5 @@ public class BFS {
 		 }
 	
 }
+
 
