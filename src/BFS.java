@@ -7,16 +7,16 @@ import java.util.Queue;
 
 public class BFS extends Operator {
 
-	static long idAktualnehoStavu = 0;
-	boolean riesenie = false;
-	StringBuilder konecnyVypis = new StringBuilder();
-	List<String> vypis = new ArrayList<String>();
-	int[] mapa = new int[50];
-	public BFS(List<Vozidlo> zaciatokVozidla) {
+	private static long idAktualnehoStavu = 0;
+	private boolean riesenie = false;
+	private StringBuilder konecnyVypis = new StringBuilder();
+	private List<String> vypis = new ArrayList<String>();
+
+	public BFS() {
 
 	}
 	
-	public int[] vypocetBFS(List<Vozidlo> zaciatokVozidla) {
+	public Uzol vypocetBFS(List<Vozidlo> zaciatokVozidla) {
 		
 	Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,idAktualnehoStavu++,0, null);
 	pociatocnyStav.setHashStavu(pociatocnyStav.getHashCode());
@@ -33,16 +33,14 @@ public class BFS extends Operator {
     vytvoreneUzly.put(pociatocnyStav.getHashCode(), zoznamUzlovNaHash);
     //System.out.println("Hash kod pre tento stav> " + pociatocnyStav.getHashCode());
     
-    int o = 0;
+    int counter = 0;
 
     while(!radNespracovanych.isEmpty()){
-    	o++;
- 	    /*if (o == 4) {
- 	    	break;
- 	    }*/
+    	counter++;
+ 	   
     	//System.out.println("Velkost queue je pred vyberom " + radNespracovanych.size()+ " " + o);
         Uzol sucasnyUzol = radNespracovanych.remove();
-        
+        int[] mapa = new int[50];
        
  	    vytvorPole(sucasnyUzol,mapa);
         //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
@@ -50,14 +48,14 @@ public class BFS extends Operator {
         if (porovnajCielovy(sucasnyUzol)){
         	riesenie = true;
         	vytvorPole(sucasnyUzol,mapa);
-        	sucasnyUzol.vypisVozidiel();
-        	
+        	//sucasnyUzol.vypisVozidiel();
+        	Uzol cielovy = sucasnyUzol;
         	
         	//System.out.println(sucasnyUzol.getPoslednePouzityOperator());
         	vypis.add(sucasnyUzol.getPoslednePouzityOperator().toString());
-       int q = 0;
+        	
         	while(sucasnyUzol.getIdPredchodcu() != 0) {      		
-        		q++;
+
         		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
         		long hash = sucasnyUzol.getHashPredchodcu();
         		long idPredchodzu = sucasnyUzol.getIdPredchodcu();
@@ -77,8 +75,23 @@ public class BFS extends Operator {
       
         	}
         	//System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
-        	break;
         	
+        	
+        	for(int i = vypis.size(); i>0; i--) {
+        		if (i == 1) {			
+        			konecnyVypis.append(vypis.get(i-1).substring(0, (vypis.get(i-1).length()-2)));
+        		} else if (i % 5 == 0){
+        			konecnyVypis.append(vypis.get(i-1)+ "\n");
+        		} else {
+        			konecnyVypis.append(vypis.get(i-1));
+        		}
+        	}
+        	
+        	System.out.println("**** Postupnost operatorov: ****" );
+        	System.out.println(konecnyVypis + "\n");
+        	
+   	    	System.out.println("Pocet prejdenych stavov v prehladavani do sirky = " + counter);
+        	return cielovy;
         	
         }
         
@@ -89,7 +102,6 @@ public class BFS extends Operator {
 
 
         for(int i=0; i<sucasnyUzol.getPoleVozidiel().size(); i++) { // pre kazde vozidlo v stave urob operaciu ak sa da
-        	//System.out.println(o++);
         	int suradnicaX = sucasnyUzol.getPoleVozidiel().get(i).getSuradnicaX();
             int suradnicaY = sucasnyUzol.getPoleVozidiel().get(i).getSuradnicaY();
             int velkost = sucasnyUzol.getPoleVozidiel().get(i).getVelkost();
@@ -208,22 +220,9 @@ public class BFS extends Operator {
         
 	    } //while is empty
 
-    if(riesenie) {	
-    	for(int i = vypis.size(); i>0; i--) {
-    		if (i == 1) {			
-    			konecnyVypis.append(vypis.get(i-1).substring(0, (vypis.get(i-1).length()-2)));
-    		} else {
-    			konecnyVypis.append(vypis.get(i-1));
-    		}
-    	}
-    	System.out.println("**** Postupnost operatorov: ****" );
-    	System.out.println(konecnyVypis);
-    	return null;
-    
-    } else {
     	System.out.println("*** Nenasiel som riesenie!! ***");
-    	
-    }
+    	System.out.println("Pocet prejdenych stavov v prehladavani do sirky = " + counter);
+    	return null;
 	
 }
 
@@ -259,21 +258,21 @@ public class BFS extends Operator {
 		    	  tempList.add(novyStav);  
 		    	  radNespracovanych.add(novyStav); 
 //		   
-				System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
-				+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-				+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
-				+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
-				System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");  
+//				System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
+//				+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+//				+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
+//				+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
+//				System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");  
 		      } else {
 //		    	  System.out.println("Pridanie stavu bolo FALSE\n");
 		      }
 		   } else {
 			  radNespracovanych.add(novyStav);
-			  System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
-						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
-						+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
-			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+//			  System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
+//						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+//						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
+//						+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
+//			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
 			  //novyStav.vypisVozidiel();
 		      tempList = new ArrayList<Uzol>();
 		      tempList.add(novyStav);               
@@ -285,7 +284,7 @@ public class BFS extends Operator {
 		//funkcia na porovnanie cieloveho stavu, ak nulte(cervene) auto dosiahne suradnicu x = 5, nasli sme konecny stav
 		public static boolean porovnajCielovy(Uzol uzol) {
 			if(uzol.getPoleVozidiel().get(0).getSuradnicaX() == 5){
-		    	System.out.println("Nasli sme cielovu poziciu");
+		    	//System.out.println("Nasli sme cielovu poziciu");
 		    	return true;
 		    }
 			return false;		
@@ -313,7 +312,6 @@ public class BFS extends Operator {
 		//vytvori jednorozmerne pole, v ktorom reprezentujem pozicie aut v mape
 		 public static void vytvorPole(Uzol uzol,int mapa[]) {
 			
-			 String stringovaMapa = new String();
 			 
 			 for(int i = 0; i<uzol.getPoleVozidiel().size(); i++) {
 		
@@ -340,6 +338,8 @@ public class BFS extends Operator {
 			    }
 			 }
 			
+			 /*
+			 String stringovaMapa = new String();
 		     for (int j = 0; j<36; j++) {
 		    	 if ( j % 6 == 0) {
 		    		 stringovaMapa = stringovaMapa +"\n";
@@ -348,7 +348,7 @@ public class BFS extends Operator {
 		    	 
 		     }
 		    	System.out.println(stringovaMapa);
-			 
+			 */
 		 }
 	
 }

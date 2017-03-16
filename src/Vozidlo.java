@@ -9,8 +9,6 @@ public class Vozidlo {
 	public Vozidlo(String farba, int i, int k, int j,char posun) {
 		this.farba = farba;
 		this.velkost = i;
-		//int suradnicaXvPoli = (j-1) % 7;
-		//int indexVPoli = (k-1)*6 + suradnicaXvPoli;
 		this.suradnicaX = j;
 		this.suradnicaY = k;
 		this.posun = posun;
