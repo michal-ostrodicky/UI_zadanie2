@@ -1,24 +1,22 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Stack;
 
-public class DFS {
+public class DFS extends Operator {
 
 	static long idAktualnehoStavu = 0;
 	boolean riesenie = false;
-	StringBuilder vypis;
-	StringBuilder konecnyVypis = new StringBuilder(); 
-	
+	StringBuilder konecnyVypis = new StringBuilder();
+	ArrayList<String> vypis = new ArrayList<String>();
+	List<ArrayList<String>> zoznamVypisov = new ArrayList<ArrayList<String>>();
 	
 	public DFS(List<Vozidlo> zaciatokVozidla) {
 		
 	Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,idAktualnehoStavu++,0, null);
 	pociatocnyStav.setHashStavu(pociatocnyStav.getHashCode());
-	//System.out.println("Hash prveho " + pociatocnyStav.getHashCode());
+	System.out.println("Hash prveho " + pociatocnyStav.getHashCode());
 
 	
 	Stack<Uzol> radNespracovanych = new Stack<>();
@@ -44,7 +42,7 @@ public class DFS {
         int[] mapa = new int[50];
        
  	    vytvorPole(sucasnyUzol,mapa);
-        //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
+        System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu() + " ID = " + sucasnyUzol.getIdStavu());
  	    
  	    
         //Zistenie ci je najdena cielova pozicia       
@@ -56,8 +54,8 @@ public class DFS {
         	
         	Uzol temp = sucasnyUzol;
         	
-        	vypis = new StringBuilder();
-        	vypis.append(sucasnyUzol.getPoslednePouzityOperator());
+
+        	vypis.add(sucasnyUzol.getPoslednePouzityOperator().toString());
         	
         	while(sucasnyUzol.getIdPredchodcu() != 0) { 
         		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
@@ -72,7 +70,7 @@ public class DFS {
         			if(aktualnyUzolvZozname.getIdStavu() == idPredchodzu) {
         				pocetOperatorovkCielu++;
         				//System.out.println(aktualnyUzolvZozname.getHashStavu() + " "+ aktualnyUzolvZozname.getPoslednePouzityOperator());
-        				vypis.append(aktualnyUzolvZozname.getPoslednePouzityOperator());
+        				vypis.add(aktualnyUzolvZozname.getPoslednePouzityOperator().toString());
         				sucasnyUzol = aktualnyUzolvZozname;
         				break;
         			}
@@ -80,12 +78,14 @@ public class DFS {
       
         	}
         	if(pocetOperatorovkCielu <= minPocetOperatorov) {
-        		//System.out.println("**** Postupnost operatorov jedneho riesenia: ****" );
+        		
+        		zoznamVypisov.add(vypis);
+        		vypis = new ArrayList<>();
+        		
         		minPocetOperatorov = pocetOperatorovkCielu;
-        		konecnyVypis.append(vypis);
-        		konecnyVypis.append("\n");
+        		//konecnyVypis.append(vypis);
         		//System.out.println(vypis + "\n");
-        		vypis = new StringBuilder();
+        		//vypis = new ArrayList<String>();
         	}
         	//System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
         	
@@ -116,7 +116,7 @@ public class DFS {
             		for(int j=1; j<5; j++) { //vytvaranie posunom vpravo
             					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
             					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 6)) { 
-            						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
+            						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j,idAktualnehoStavu++);
             						pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
             					} else {
             						break;
@@ -127,7 +127,7 @@ public class DFS {
             		for(int j=1; j<5; j++) { //vytvaranie posunom vlavo	
             					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava  			
             				if ((indexVPoli-j > 0) && (mapa[indexVPoli-j] != 1) && ((suradnicaX-j) >= 1)) {
-            							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
+            							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j,idAktualnehoStavu++);
             							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 
             							
@@ -141,7 +141,7 @@ public class DFS {
             	for(int j=1; j<4; j++) { //vytvaranie posunom vpravo
 					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom doprava
 					if((mapa[indexVPoli+j] != 1) && ((suradnicaX+j) < 5)) { 
-						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j);
+						Uzol novyStav = operaciaVpravo(sucasnyUzol,i,suradnicaX+j, j,idAktualnehoStavu++);
 						pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 					} else {
 						break;
@@ -153,7 +153,7 @@ public class DFS {
 		    					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava
 		    				if ((mapa[indexVPoli-j] != 1) && ((suradnicaX-j)) >= 1) {
 		    					
-		    							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j);
+		    							Uzol novyStav = operaciaVlavo(sucasnyUzol,i,suradnicaX-j,j,idAktualnehoStavu++);
 		    							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 		    				} else {
 		    					break;
@@ -168,7 +168,7 @@ public class DFS {
 		            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 6; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
 	            	for(int j=1; j<5; j++) { //vytvaranie posunom dole
 	            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 6) {
-        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
+        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j,idAktualnehoStavu++);
         							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 	        					} else {
 	        						break;
@@ -178,7 +178,7 @@ public class DFS {
 	            	for(int j=1; j<5; j++) { //vytvaranie posunom hore
 	            		
 	            		if ((indexVPoli-j*6 >= 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) {
-	            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
+	            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j,idAktualnehoStavu++);
 	            			pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 	            		}
 	            		else {
@@ -193,7 +193,7 @@ public class DFS {
 		            indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1 + 12; //pre Velkost vozidiel +6 co znamena posun o riadok nizsie v mape
 	            	for(int j=1; j<4; j++) { //vytvaranie posunom dole
 	            		if ((mapa[indexVPoli+j*6] != 1) && ((suradnicaY+j)) < 5) {
-        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j);
+        							Uzol novyStav = operaciaDole(sucasnyUzol,i,suradnicaY+j,j,idAktualnehoStavu++);
         							pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 	        					} else {
 	        						break;
@@ -204,7 +204,7 @@ public class DFS {
         			indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
 	            	for(int j=1; j<4; j++) { //vytvaranie posunom hore
 	            		if ((indexVPoli-j*6 >= 0) && (mapa[indexVPoli-j*6] != 1) && ((suradnicaY-j)) >= 1) { //prva podmienka je kvoli tomu, aby nechodilo do zapornych indexov v poli
-	            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j);
+	            			Uzol novyStav = operaciaHore(sucasnyUzol,i,suradnicaY-j,j,idAktualnehoStavu++);
 	            			pridanieUzlaDoMapy(vytvoreneUzly, radNespracovanych, novyStav,sucasnyUzol,i);
 	            		}
 	            		else {
@@ -218,17 +218,30 @@ public class DFS {
         
         
 	    } //while is empty
-  //  System.out.println("***** Pocet " + maxKroky);
-    //System.out.println(save);
-
-    if(riesenie) {
-    	System.out.println("**** Postupnost operatorov jedneho riesenia: ****" );
-		konecnyVypis.append(vypis);
-		System.out.println(konecnyVypis);
+ 
+    
+    if(riesenie) {	
+    	System.out.println("**** Postupnost operatorov: ****" );
+    	for(int i = zoznamVypisov.size(); i>0; i--) {
+    		
+    		 for(int j = zoznamVypisov.get(i-1).size(); j>0; j-- ) {
+//    			 if (j == 1) {			
+//    				 	konecnyVypis.append(zoznamVypisov.get(i-1).get(j-1).substring(0, (zoznamVypisov.get(i).get(j-1).length()-2)));
+//    	    		} else {
+    	    			konecnyVypis.append(zoznamVypisov.get(i-1).get(j-1));
+    	    		//}
+    			 
+    		 }
+    		 System.out.println(konecnyVypis + "\n");
+    		 konecnyVypis = new StringBuilder();
+    	}
     	
+    
     } else {
     	System.out.println("*** Nenasiel som riesenie!! ***");
+    	
     }
+        
 }
 
 	//funkcia na pridanie uzla do mapy
@@ -263,21 +276,21 @@ public class DFS {
 		    	  tempList.add(novyStav);  
 		    	  radNespracovanych.add(novyStav); 
 //		   
-//				System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
-//				+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-//				+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
-//				+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
-//				System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");  
+				System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
+				+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+				+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
+				+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
+				System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");  
 		      } else {
 //		    	  System.out.println("Pridanie stavu bolo FALSE\n");
 		      }
 		   } else {
 			  radNespracovanych.add(novyStav);
-//			  System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
-//						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
-//						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
-//						+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
-//			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
+			  System.out.println("Pridal som novy stav autom " + sucasnyStav.getPoleVozidiel().get(i).getFarba() + " x=" 
+						+ novyStav.getPoleVozidiel().get(i).getSuradnicaX() + " y=" + novyStav.getPoleVozidiel().get(i).getSuradnicaY() 
+						+ " operacia: " + novyStav.getPoslednePouzityOperator() + " hashcode predchodzu=" + novyStav.getHashPredchodcu()
+						+ " ID predchodzu= " + novyStav.getIdPredchodcu() + " ID aktualne=" + novyStav.getIdStavu());
+			  System.out.println("Hash kod pre tento stav> " + novyStav.getHashCode() + "\n");
 			  //novyStav.vypisVozidiel();
 		      tempList = new ArrayList<Uzol>();
 		      tempList.add(novyStav);               
@@ -289,93 +302,12 @@ public class DFS {
 		//funkcia na porovnanie cieloveho stavu, ak nulte(cervene) auto dosiahne suradnicu x = 5, nasli sme konecny stav
 		public static boolean porovnajCielovy(Uzol uzol) {
 			if(uzol.getPoleVozidiel().get(0).getSuradnicaX() == 5){
-		    	//System.out.println("Nasli sme cielovu poziciu");
+		    	System.out.println("Nasli sme cielovu poziciu");
 		    	return true;
 		    }
 			return false;		
 		}
 		
-		public static Uzol operaciaVpravo(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
-			List<Vozidlo> novoVytvorene = copyArrayList(stav);
-			long hashPredchodzu = stav.getHashStavu(); 
-			long idPredchodzu = stav.getIdStavu();
-			
-			StringBuilder builder = new StringBuilder();
-			builder.append("VPRAVO(");
-			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
-			builder.append(", ");
-			builder.append(posun);
-			builder.append(") ");
-			
-			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
-			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
-			novyStav.setHashStavu(novyStav.getHashCode());
-			
-			return novyStav;
-		}
-		
-		public static Uzol operaciaVlavo(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
-			
-			List<Vozidlo> novoVytvorene = copyArrayList(stav);
-			long hashPredchodzu = stav.getHashStavu(); 
-			long idPredchodzu = stav.getIdStavu();
-		
-			
-			StringBuilder builder = new StringBuilder();
-			builder.append("VLAVO(");
-			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
-			builder.append(", ");
-			builder.append(posun);
-			builder.append(") ");
-			
-			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
-			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaX(posunNaPoziciu);
-			novyStav.setHashStavu(novyStav.getHashCode());
-			
-			return novyStav;
-		}
-		
-		public static Uzol operaciaDole(Uzol stav, int indexVozidla, int posunNaPoziciu,int posun) {
-			
-			List<Vozidlo> novoVytvorene = copyArrayList(stav);
-			long hashPredchodzu = stav.getHashStavu(); 
-			long idPredchodzu = stav.getIdStavu();
-		
-			
-			StringBuilder builder = new StringBuilder();
-			builder.append("DOLE(");
-			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
-			builder.append(", ");
-			builder.append(posun);
-			builder.append(") ");
-			
-			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
-			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
-			novyStav.setHashStavu(novyStav.getHashCode());
-			
-			return novyStav;
-		}
-		
-		public static Uzol operaciaHore(Uzol stav, int indexVozidla, int posunNaPoziciu, int posun) {
-			
-			List<Vozidlo> novoVytvorene = copyArrayList(stav);
-			long hashPredchodzu = stav.getHashStavu(); 
-			long idPredchodzu = stav.getIdStavu();
-		
-			
-			StringBuilder builder = new StringBuilder();
-			builder.append("HORE(");
-			builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
-			builder.append(", ");
-			builder.append(posun);
-			builder.append(") ");
-			
-			Uzol novyStav = new Uzol(novoVytvorene, hashPredchodzu,0,idAktualnehoStavu++,idPredchodzu, builder);
-			novyStav.getPoleVozidiel().get(indexVozidla).setSuradnicaY(posunNaPoziciu);
-			novyStav.setHashStavu(novyStav.getHashCode());
-			
-			return novyStav;
-		}
 		
 		public static Boolean zistiTotoznost(Uzol vHashMape, Uzol novyStav){
 			for(int i = 0; i< vHashMape.getPoleVozidiel().size(); i++) {
@@ -393,26 +325,7 @@ public class DFS {
 			return true;
 			
 		}
-		//Metoda na kopirovanie arraylistu vozidiel, pri vytvarani noveho stavu
-		public static List<Vozidlo> copyArrayList(Uzol stav) {
-			int suradnicaX;
-			int suradnicaY;
-			int velkost;
-			char smer;
-			
-			List<Vozidlo> novoVytvorene = new ArrayList<Vozidlo>();
-		    for(int p = 0; p<stav.getPoleVozidiel().size();p++) {
-		    	suradnicaX = stav.getPoleVozidiel().get(p).getSuradnicaX();
-		    	suradnicaY = stav.getPoleVozidiel().get(p).getSuradnicaY();
-		    	velkost = stav.getPoleVozidiel().get(p).getVelkost();
-		    	smer = stav.getPoleVozidiel().get(p).getPosun();
-		    	String farba = stav.getPoleVozidiel().get(p).getFarba();
-		    	Vozidlo noveVozidlo = new Vozidlo(farba, velkost, suradnicaY, suradnicaX, smer);
-		    	novoVytvorene.add(noveVozidlo);
-		    }
-			return novoVytvorene;
 		
-		}
 		
 		//vytvori jednorozmerne pole, v ktorom reprezentujem pozicie aut v mape
 		 public static void vytvorPole(Uzol uzol,int mapa[]) {
@@ -444,14 +357,14 @@ public class DFS {
 			    }
 			 }
 			
-//		     for (int j = 0; j<36; j++) {
-//		    	 if ( j % 6 == 0) {
-//		    		 stringovaMapa = stringovaMapa +"\n";
-//		    	 }
-//		    	 stringovaMapa = stringovaMapa + mapa[j] + ", ";
-//		    	 
-//		     }
-//		    	System.out.println(stringovaMapa);
+		     for (int j = 0; j<36; j++) {
+		    	 if ( j % 6 == 0) {
+		    		 stringovaMapa = stringovaMapa +"\n";
+		    	 }
+		    	 stringovaMapa = stringovaMapa + mapa[j] + ", ";
+		    	 
+		     }
+		    	System.out.println(stringovaMapa);
 			 
 		 }
 	
