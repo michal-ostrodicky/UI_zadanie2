@@ -87,8 +87,9 @@ public class BFS extends Operator {
         		}
         	}
         	
-        	System.out.println("**** Postupnost operatorov: ****" );
+        	System.out.println("**** Postupnost operatorov(najdene hladanim do sirky): ****" );
         	System.out.println(konecnyVypis + "\n");
+        	
         	
    	    	System.out.println("Pocet prejdenych stavov v prehladavani do sirky = " + counter);
         	return cielovy;

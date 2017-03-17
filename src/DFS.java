@@ -207,7 +207,7 @@ public class DFS extends Operator {
 //    	
 //    }
         System.out.println("Pocet prejdenych stavov prehladavanim do hlbky = " + counter);
-        System.out.println("Pocet vsetkych cielovych stavov = " + pocetCielovychStavov);
+        System.out.println("Pocet vsetkych cielovych stavov(hladanim do hlbky) = " + pocetCielovychStavov);
 }
 
 	//funkcia na pridanie uzla do mapy

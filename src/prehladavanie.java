@@ -1,5 +1,11 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,104 +19,71 @@ public class prehladavanie{
 		long koniec;
 		long casTrvaniaDFS; 
 		long casTrvaniaBFS;
-		int pocetVozidiel;
-		int suradnicaX; 
-		int suradnicaY; 
-		int velkost; 
-		char smer;
-		String smerString = new String();
+		int suradnicaX = 0; 
+		int suradnicaY = 0; 
+		int pocetVozidiel = 0;
+		int velkost = 0; 
+		char smer = 0;
+		int counter;
+	
 		String farba = new String();
 		
 		
-		Scanner reader = new Scanner(System.in);  // Reading from System.in
+		BufferedReader reader = null;
+		
+		Scanner vstup = new Scanner(System.in); 
+		System.out.println("Zadajte nazov vstupu( napr. Vstup1)");
+		String filename = vstup.next();
+		
+		File file = new File(filename+".txt");
 		try {
-			System.out.println("Napiste pocet vozidiel: ");
-			pocetVozidiel = reader.nextInt();
-		
-			for(int i = 1; i<=pocetVozidiel; i++) {
-				
-				System.out.println("Farba vozidla " + i + ". vozidla: ");
-				farba = reader.next();
-				System.out.println("Velkost vozidla");
-				velkost = reader.nextInt();
-				System.out.println("X-ova suradnica: ");
-				suradnicaX = reader.nextInt();
-				System.out.println("Y-ova suradnica: ");
-				suradnicaY = reader.nextInt();
-				System.out.println("Smer vozidla");
-				smerString = reader.next();
-				smer = smerString.charAt(0);
-				Vozidlo cerveneVozidlo = new Vozidlo(farba, velkost, suradnicaY, suradnicaX, smer);
-				zaciatokVozidla.add(cerveneVozidlo);
-				System.out.println("\n");
-			}
-		
-		} catch(InputMismatchException e) {
-			System.out.println("ZLY VSTUP");
-			System.exit(1500);
-			
+			reader = new BufferedReader(
+				    new InputStreamReader(
+				        new FileInputStream(file),
+				        Charset.forName("UTF-8")));
+		} catch (FileNotFoundException e) {
+			System.out.println("Neexitujuci subor na vstup! Program sa vypina...");
+			System.exit(0);
 		}
-		reader.close();
-		//Vytvaranie vozidiel do vstupneho stavu
-		//Vozidlo blokoveVozidlo = new Vozidlo("Fialove",3 ,3 ,4 , 'h');
+			String c;
+			try {	
+				while((c = reader.readLine()) != null) {
+					pocetVozidiel++;
+					String[] arr = c.split(" ");  
+					counter = 0;
+					try {
+					 for ( String slovo : arr) {
+						 
+						 switch(counter) {
+						 case 0: farba = slovo; 
+						 		 break;
+						 case 1: velkost = Integer.parseInt(slovo);
+						 		 break;
+						 case 2: suradnicaY = Integer.parseInt(slovo);
+						 		 break;
+						 case 3: suradnicaX = Integer.parseInt(slovo);
+						 		 break;
+						 case 4: smer = slovo.charAt(0);
+						 		 break;
+						 }
+						 counter++;
+						 
+					  }	
+					 System.out.println(pocetVozidiel + " je " + farba);
+					 Vozidlo vozidlo = new Vozidlo(farba, velkost, suradnicaY, suradnicaX, smer);
+					 zaciatokVozidla.add(vozidlo);
+					} catch (NumberFormatException e) {
+						System.out.println("Chyba vo vstupnom subore, zadali cislo v zlom formate! Program sa vypina...");
+						System.exit(0);
+					}
+				  
+				}
+			} catch (IOException e) {
+				System.out.println("Chyba vo vstupnom subore! Program sa vypina...");
+				System.exit(0);
+			}        
 		
-//		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 2, 'h');
-//		Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove",2 ,1 ,1 , 'h');
-//		Vozidlo zlteVozidlo = new Vozidlo("Zlte", 3, 2, 1, 'v');
-//		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",2 ,5 ,1 , 'v');
-//		Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
-//		Vozidlo svetlomodreVozidlo = new Vozidlo("Svetlomodre", 3, 6, 3, 'h');
-//		Vozidlo siveVozidlo = new Vozidlo("Sive", 2, 5, 5, 'h');
-//		Vozidlo tmavomodreVozidlo = new Vozidlo("Tmavomodre", 3, 1, 6, 'v');
-		
-		
-//		1, 1, 0, 0, 0, 1, 
-//		1, 0, 0, 1, 0, 1, 
-//		1, 1, 1, 1, 0, 1, 
-//		1, 0, 0, 1, 0, 0, 
-//		1, 0, 0, 0, 1, 1, 
-//		1, 0, 1, 1, 1, 0, 
-		 
-		//zaciatokVozidla.add(blokoveVozidlo);
-		
-//		zaciatokVozidla.add(cerveneVozidlo);
-//		zaciatokVozidla.add(oranzoveVozidlo);
-//		zaciatokVozidla.add(zlteVozidlo);
-//		zaciatokVozidla.add(fialoveVozidlo);
-//		zaciatokVozidla.add(zeleneVozidlo);
-//		zaciatokVozidla.add(svetlomodreVozidlo);
-//		zaciatokVozidla.add(siveVozidlo);
-//		zaciatokVozidla.add(tmavomodreVozidlo);
-
-		
-		
-//		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 2, 'h');
-//		Vozidlo blokoveVozidlo = new Vozidlo("Fialove",3, 2, 4, 'v');
-//		Vozidlo oranzoveVozidlo = new Vozidlo("Oranzove",3, 2, 5, 'v');
-//		Vozidlo zlteVozidlo = new Vozidlo("Zlte", 3, 2, 6, 'v');
-//		Vozidlo fialoveVozidlo = new Vozidlo("Fialove",3 ,5 ,4 , 'h');
-//		Vozidlo fialoveVozidlo2 = new Vozidlo("Fialove",3 ,6 ,4 , 'h');
-//		Vozidlo zlteVozidlo2 = new Vozidlo("zlteVozidlo",3 ,5 ,1 , 'h');
-//		Vozidlo zlteVozidlo3 = new Vozidlo("zlteVozidlo",3 ,6 ,1 , 'h');
-//
-//		zaciatokVozidla.add(cerveneVozidlo);
-//		zaciatokVozidla.add(blokoveVozidlo);
-//		zaciatokVozidla.add(oranzoveVozidlo);
-//		zaciatokVozidla.add(zlteVozidlo);
-//		zaciatokVozidla.add(fialoveVozidlo);
-//		zaciatokVozidla.add(fialoveVozidlo2);
-//		zaciatokVozidla.add(zlteVozidlo2);
-//		zaciatokVozidla.add(zlteVozidlo3);
-		
-//		Vozidlo cerveneVozidlo = new Vozidlo("Cervene", 2, 3, 2, 'h');
-//		Vozidlo zeleneVozidlo = new Vozidlo("Zelene", 3, 2, 4, 'v');
-//		Vozidlo svetlomodreVozidlo = new Vozidlo("Svetlomodre", 3, 6, 3, 'h');
-//		
-//		
-//		zaciatokVozidla.add(cerveneVozidlo);
-//		zaciatokVozidla.add(zeleneVozidlo);
-//		zaciatokVozidla.add(svetlomodreVozidlo);
-		System.out.println("Krizovatka pred presunom: ");
+		System.out.println("\nKrizovatka pred presunom: ");
 		vytvorPole(zaciatokVozidla);
 		
 		BFS hladanieDoSirky =  new BFS();	
@@ -130,7 +103,7 @@ public class prehladavanie{
 		System.out.println("DFS cas vypoctu " + casTrvaniaDFS + " ms.");
 		
 		if (cielovy != null) {
-			System.out.println("Krizovatka po presune: ");
+			System.out.println("\nKrizovatka po presune: ");
 			vytvorPole(cielovy);
 		}
     	
