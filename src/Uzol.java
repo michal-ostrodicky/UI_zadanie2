@@ -1,6 +1,17 @@
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Struktura uzla. Ma atribut poleVozidiel, ktory vyjadruje aktualny stav(rozlozenie) aut v krizovatke.
+ * Atributy idStavu a idPredchodcu vyjadruju jedinecne ID pre kazdy vytvoreny stav. Pri kazdom vytvoreni uzla 
+ * sa hodnota ID inkrementuje. Tento atribut zabezpecuje jednoznacne retazenie stavov pri hladani(vypisani)
+ * najkratsej postupnosti operatorov k cielovemu stavu.
+ * Atribut hashStavu a hashPredchodcu predstavuje vypocitany hash z atributu poleVozidiel. Podla neho viem ziskat stav z hash mapy.
+ * Hash je pre viacere stavy rovnake, preto to nie je jedinecny identifikator pre spatnu cestu. 
+ * PoslednePouzityOperator - String v ktorom sa nachadza posledne pouzity operator pomocou, ktoreho som sa dostal do toho stavu.
+ * @author Michal Ostrodicky
+ *
+ */
 public class Uzol {
 	private List<Vozidlo> poleVozidiel;
 	private long hashStavu;
@@ -64,6 +75,11 @@ public class Uzol {
 		this.idPredchodcu = idPredchodcu;
 	}
 	
+	/**
+	 * Vlastna funkcia na vytvorenie hashu pre stav. 
+	 * Do hashu sa zapocitavaju vsetky atributy pola vozidiel. Pri znizenie kolizii pouzivam prvocisla 17 a 31 pri vypocte
+	 * @return
+	 */
 	public long getHashCode() {
 		long hashArray = 17;
 		
@@ -77,7 +93,10 @@ public class Uzol {
 	}
 	
 
-
+	/**
+	 * Pomocna funkcia na vypis stavu, presne rozlozenie vozidiel, ich pozicie.
+	 * 
+	 */
 	public void vypisVozidiel() {
 		for(int i=0; i<poleVozidiel.size(); i++) {
 			System.out.println("farba = " + poleVozidiel.get(i).getFarba());

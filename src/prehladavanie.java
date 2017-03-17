@@ -9,9 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
+/**
+ * Trieda v ktorej sa nachadza main a ktora sa spusta. Ziskava vstup od pouzivatela.
+ * Tato trieda vola metody na prehladavanie do sirky a do hlbky. 
+ * Jednotlive vysledky prehladne vypisuje do dvojrozmerneho pola.
+ * @author Michal Ostrodicky
+ *
+ */
 public class prehladavanie{
-	
 	
 	public static void main(String[] args)  {
 		List<Vozidlo> zaciatokVozidla = new ArrayList<Vozidlo>();
@@ -25,17 +30,18 @@ public class prehladavanie{
 		int velkost = 0; 
 		char smer = 0;
 		int counter;
-	
 		String farba = new String();
 		
 		
 		BufferedReader reader = null;
-		
+		//zadanie nazvu testovacieho suboru
 		Scanner vstup = new Scanner(System.in); 
-		System.out.println("Zadajte nazov vstupu( napr. Vstup1)");
+		System.out.println("Zadajte nazov vstupu( napr. vstup1)");
 		String filename = vstup.next();
 		
-		File file = new File(filename+".txt");
+		
+		//citanie testovaci udajov zo suboru
+		File file = new File(filename.toLowerCase()+".txt");
 		try {
 			reader = new BufferedReader(
 				    new InputStreamReader(
@@ -118,29 +124,33 @@ public class prehladavanie{
 	    	
 	    	
 	}
-	
+	/**
+	 * Pomocna metoda na vytvorenie reprezentacie mapy. Kazde cislo vacsie ako 0 znaci nejake vozidlo.
+	 * Vytvori jednorozmerne pole. Krizovatka ma rozlozenie 6x6 a v jednorozmernom poli je to tak, 
+	 * ze prvych 6 indexov(0-5 v reprezentacii pola) patri prvemu riadku, dalsich 6 je od 6 po 11, atd. 
+	 * @param uzol - uzol z ktoreho sa generuje mapa
+	 */
 	public static void vytvorPole(Uzol uzol) {
 		int mapa[] = new int[50];
 		 
 		 for(int i = 0; i<uzol.getPoleVozidiel().size(); i++) {
-	
-			 
-			 int zapisPoctuJednotiekx = uzol.getPoleVozidiel().get(i).getVelkost();
+			 int zapisPoctuJednotiekx = uzol.getPoleVozidiel().get(i).getVelkost();//podla velkosti pridavam 1 do mapy.
+			 //pre velkost 2 pridavam dve jednotky, inak pridavam tri jednotky
 			 if (uzol.getPoleVozidiel().get(i).getPosun() == 'h') {
 	
 		    			int suradnicaX = (uzol.getPoleVozidiel().get(i).getSuradnicaX()-1);
-		    			int indexVPoli = (uzol.getPoleVozidiel().get(i).getSuradnicaY()-1)*6 + suradnicaX;
+		    			int indexVPoli = (uzol.getPoleVozidiel().get(i).getSuradnicaY()-1)*6 + suradnicaX; //pre kazde vozidlo zistim jeho index v poli a do mapy mapisem pocet jednotiek
 	
 		    			for(int j = 0; j<zapisPoctuJednotiekx; j++ ) {
 		    				mapa[indexVPoli+j] = i+1;	
 		    			}    			 
 		    			
-		    } else {		    	
+		    } else { // vertikalny smer 	    	
 		    	int suradnicaX = (uzol.getPoleVozidiel().get(i).getSuradnicaX()-1);
 				int indexVPoli = (uzol.getPoleVozidiel().get(i).getSuradnicaY()-1)*6 + suradnicaX;
 	
 				for(int j = 0; j<zapisPoctuJednotiekx; j++ ) {
-					mapa[indexVPoli+6*j] = i+1;	
+					mapa[indexVPoli+6*j] = i+1;	//vertikalne auta maju jednotky pod sebou, preto pridavam nasobky 6(sirka krizovatky)
 				}    		
 		    	
 		    	
@@ -157,6 +167,11 @@ public class prehladavanie{
 		    	System.out.println(stringovaMapa);
 	}
 	
+	/**
+	 * Pomocna metoda na vytvorenie reprezentacie mapy. Kazde cislo vacsie ako 0 znaci nejake vozidlo.
+	 * Tato metoda vsak prijima ako parameter priamo zoznam vozidiel a nie stav. 
+	 * @param zoznamVozidiel - 
+	 */
 	public static void vytvorPole(List<Vozidlo> zoznamVozidiel) {
 		int mapa[] = new int[50];
 		 

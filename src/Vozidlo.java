@@ -1,5 +1,10 @@
+/**
+ * Struktura stavu, obsahuje premenne pomocou, ktorych viem reprezentovat stav. 
+ * Farbu vozidla, jeho velkost, suradnice a jeho smer. 
+ * @author Michal Ostrodicky
+ *
+ */
 public class Vozidlo {
-
 	private String farba;
 	private int velkost;
 	private int suradnicaX;
@@ -44,10 +49,4 @@ public class Vozidlo {
 		this.posun = posun;
 	}
 	
-	public void vypisDetailyVozidla() {
-		System.out.println("farba = " + this.farba);
-		System.out.println("suradnice x= " + this.suradnicaX + ", y= " + this.suradnicaY);
-		System.out.println("posun = " + this.posun + "\n");
-		
-	}
 }
