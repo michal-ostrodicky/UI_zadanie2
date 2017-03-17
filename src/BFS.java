@@ -8,7 +8,6 @@ import java.util.Queue;
 public class BFS extends Operator {
 
 	private static long idAktualnehoStavu = 0;
-	private boolean riesenie = false;
 	private StringBuilder konecnyVypis = new StringBuilder();
 	private List<String> vypis = new ArrayList<String>();
 
@@ -46,7 +45,6 @@ public class BFS extends Operator {
         //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
         //Zistenie ci je najdena cielova pozicia       
         if (porovnajCielovy(sucasnyUzol)){
-        	riesenie = true;
         	vytvorPole(sucasnyUzol,mapa);
         	//sucasnyUzol.vypisVozidiel();
         	Uzol cielovy = sucasnyUzol;
@@ -56,10 +54,8 @@ public class BFS extends Operator {
         	
         	while(sucasnyUzol.getIdPredchodcu() != 0) {      		
 
-        		//vypis = vypis + sucasnyUzol.getPoslednePouzityOperator() + ", ";
         		long hash = sucasnyUzol.getHashPredchodcu();
         		long idPredchodzu = sucasnyUzol.getIdPredchodcu();
-        		//System.out.println("Dalsi " + hash);
         		zoznamUzlovNaHash = null;
         		zoznamUzlovNaHash = vytvoreneUzly.get(hash);
 
@@ -67,15 +63,12 @@ public class BFS extends Operator {
     	   	    	//vytvorPole(aktualnyUzolvZozname,mapa);	
         			if(aktualnyUzolvZozname.getIdStavu() == idPredchodzu) {
         				vypis.add(aktualnyUzolvZozname.getPoslednePouzityOperator().toString());
-        				//System.out.println(aktualnyUzolvZozname.getPoslednePouzityOperator());
         				sucasnyUzol = aktualnyUzolvZozname;
         				break;
         			}
         		}
       
         	}
-        	//System.out.println(sucasnyUzol.getHashStavu() + " "+ sucasnyUzol.getPoslednePouzityOperator());
-        	
         	
         	for(int i = vypis.size(); i>0; i--) {
         		if (i == 1) {			

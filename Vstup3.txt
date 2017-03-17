@@ -1,7 +1,7 @@
-Cervene 2 3 2 h
+Cervene 2 3 1 h
 Fialove 3 2 4 v
 Oranzove 3 2 5 v
 Zlte 3 2 6 v
 Sive 3 5 4 h
 Tmavomodre 3 6 4 h
-Zelene 3 5 1 h
+Zelene 2 5 1 h

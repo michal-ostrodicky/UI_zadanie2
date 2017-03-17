@@ -94,18 +94,26 @@ public class prehladavanie{
 		koniec = System.currentTimeMillis();
 		casTrvaniaBFS = koniec - start;
 		
+		if (cielovy != null) {
+			System.out.println("\nKrizovatka po presune BFS: ");
+			vytvorPole(cielovy);
+		}
+		
+		
 		start = System.currentTimeMillis();
-		hladanieDoHlby.vypocetDFS(zaciatokVozidla, cielovy);
+		cielovy = hladanieDoHlby.vypocetDFS(zaciatokVozidla, cielovy);
 		koniec = System.currentTimeMillis();
 		casTrvaniaDFS = koniec - start;
+		
+		if (cielovy != null) {
+			System.out.println("\nKrizovatka po presune DFS: ");
+			vytvorPole(cielovy);
+		}
 		
 		System.out.println("\nBFS cas vypoctu " + casTrvaniaBFS + " ms.");
 		System.out.println("DFS cas vypoctu " + casTrvaniaDFS + " ms.");
 		
-		if (cielovy != null) {
-			System.out.println("\nKrizovatka po presune: ");
-			vytvorPole(cielovy);
-		}
+		
     	
 	    	
 	    	

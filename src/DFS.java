@@ -16,7 +16,7 @@ public class DFS extends Operator {
 	
 	}
 	
-	public void vypocetDFS(List<Vozidlo> zaciatokVozidla,Uzol cielovy) {
+	public Uzol vypocetDFS(List<Vozidlo> zaciatokVozidla,Uzol cielovy) {
 		
 	Uzol pociatocnyStav = new Uzol(zaciatokVozidla,0,0,idAktualnehoStavu++,0, null);
 	pociatocnyStav.setHashStavu(pociatocnyStav.getHashCode());
@@ -34,7 +34,7 @@ public class DFS extends Operator {
     //System.out.println("Hash kod pre tento stav> " + pociatocnyStav.getHashCode());
     
     int counter = 0;
-    int pocetCielovychStavov = 0;
+    
     while(!radNespracovanych.isEmpty()){
     	counter++;
  	    
@@ -43,7 +43,7 @@ public class DFS extends Operator {
         int[] mapa = new int[50];
        
  	    vytvorPole(sucasnyUzol,mapa);
-       // System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu() + " ID = " + sucasnyUzol.getIdStavu());
+        //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu() + " ID = " + sucasnyUzol.getIdStavu());
  	    
  	    
         //Zistenie ci je najdena cielova pozicia       
@@ -57,7 +57,8 @@ public class DFS extends Operator {
  	    if(porovnajCielovy(sucasnyUzol)) {
  	    	riesenie = true;
  	    	//System.out.println("Nasiel som cielovu poz.");
- 	    	pocetCielovychStavov++;
+ 	    	System.out.println("\nPocet prejdenych stavov prehladavanim do hlbky = " + counter);
+ 	    	return sucasnyUzol;
  	    }
         
        
@@ -87,7 +88,6 @@ public class DFS extends Operator {
             						break;
             					}
             		}   
-            		
             		indexVPoli = (suradnicaY-1)*6 + suradnicaX - 1;
             		for(int j=1; j<5; j++) { //vytvaranie posunom vlavo	
             					//prechadza zvysok celeho listu vozidiel, sleduje ci moze spravit krok smerom dolava  			
@@ -99,7 +99,7 @@ public class DFS extends Operator {
             					} else {
             						break;
             					}
-            	}
+            		}
             } else if (velkost == 3) {
             	
             	indexVPoli = (suradnicaY-1)*6 + suradnicaX + velkost - 2;
@@ -206,8 +206,9 @@ public class DFS extends Operator {
 //    	System.out.println("*** Nenasiel som riesenie!! ***");
 //    	
 //    }
-        System.out.println("Pocet prejdenych stavov prehladavanim do hlbky = " + counter);
-        System.out.println("Pocet vsetkych cielovych stavov(hladanim do hlbky) = " + pocetCielovychStavov);
+    	System.out.println("Pocet prejdenych stavov prehladavanim do hlbky = " + counter);
+		return null;
+
 }
 
 	//funkcia na pridanie uzla do mapy
