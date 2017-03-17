@@ -314,7 +314,7 @@ public class DFS extends Operator {
 		 * 6x6 a v jednorozmernom poli je to tak, ze prvych 6 indexov(0-5 v reprezentacii pola) patri prvemu riadku,
 		 * dalsich 6 je od 6 po 11, atd. 
 		 * @param uzol
-		 * @param mapa
+		  * @param mapa - jednorozmerne pole reprezentujuce rozlozenie aut v krizovatke
 		 */
 		 public static void vytvorPole(Uzol uzol,int mapa[]) {
 			 for(int i = 0; i<uzol.getPoleVozidiel().size(); i++) {

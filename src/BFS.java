@@ -64,7 +64,9 @@ public class BFS extends Operator {
         	//System.out.println(sucasnyUzol.getPoslednePouzityOperator());
         	
         	//postupne sa prechadza spatne az k prvemu stavu a pri tejto ceste sa vypisuju pouzite operatory
-        	vypis.add(sucasnyUzol.getPoslednePouzityOperator().toString());
+        	if(sucasnyUzol.getPoslednePouzityOperator() != null) { 
+        		vypis.add(sucasnyUzol.getPoslednePouzityOperator().toString());
+        	}
      
         	while(sucasnyUzol.getIdPredchodcu() != 0) {      		
 
@@ -359,7 +361,7 @@ public class BFS extends Operator {
 		 * 6x6 a v jednorozmernom poli je to tak, ze prvych 6 indexov(0-5 v reprezentacii pola) patri prvemu riadku,
 		 * dalsich 6 je od 6 po 11, atd. 
 		 * @param uzol
-		 * @param mapa
+		 * @param mapa - jednorozmerne pole reprezentujuce rozlozenie aut v krizovatke
 		 */
 		 public static void vytvorPole(Uzol uzol,int mapa[]) {
 			 for(int i = 0; i<uzol.getPoleVozidiel().size(); i++) {	 
