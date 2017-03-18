@@ -52,7 +52,6 @@ public class BFS extends Operator {
         int[] mapa = new int[50]; 
        
  	    vytvorPole(sucasnyUzol,mapa);
-        //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu());
  	    
         //Zistenie ci je najdena cielova pozicia       
         if (porovnajCielovy(sucasnyUzol)){
@@ -61,8 +60,7 @@ public class BFS extends Operator {
         	//sucasnyUzol.vypisVozidiel();
         	Uzol cielovy = sucasnyUzol;
         	
-        	//System.out.println(sucasnyUzol.getPoslednePouzityOperator());
-        	
+
         	//postupne sa prechadza spatne az k prvemu stavu a pri tejto ceste sa vypisuju pouzite operatory
         	if(sucasnyUzol.getPoslednePouzityOperator() != null) { 
         		vypis.add(sucasnyUzol.getPoslednePouzityOperator().toString());
@@ -106,9 +104,6 @@ public class BFS extends Operator {
         }
         
        
-       
-        //System.out.println("Aktualne pracujem s:");
-        //sucasnyUzol.vypisVozidiel();
 
         //Pre kazde vozidlo skusam vykonat operaciu ak sa da
         for(int i=0; i<sucasnyUzol.getPoleVozidiel().size(); i++) { 

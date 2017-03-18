@@ -51,7 +51,7 @@ public class DFS extends Operator {
         int[] mapa = new int[50];
       //Ak sme nasli, je potrebne vypisat operatory, ktore sme pouzili
  	    vytvorPole(sucasnyUzol,mapa);
-        //System.out.println("Aktualne pracujem s:" + sucasnyUzol.getHashStavu() + " ID = " + sucasnyUzol.getIdStavu());
+        
  	  
  	    //Zistenie ci je najdena cielova pozicia 
  	    if(porovnajCielovy(sucasnyUzol)) {
@@ -60,10 +60,6 @@ public class DFS extends Operator {
  	    	return sucasnyUzol;
  	    }
         
-       
-        //System.out.println("Aktualne pracujem s:");
-        //sucasnyUzol.vypisVozidiel();
-
 
  	 //Pre kazde vozidlo skusam vykonat operaciu ak sa da
         for(int i=0; i<sucasnyUzol.getPoleVozidiel().size(); i++) { 
