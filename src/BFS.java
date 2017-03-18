@@ -88,7 +88,7 @@ public class BFS extends Operator {
         	//Operatory su v opacnom poradi, tento cyklus ich obrati
         	for(int i = vypis.size(); i>0; i--) {
         		if (i == 1) {			
-        			konecnyVypis.append(vypis.get(i-1).substring(0, (vypis.get(i-1).length()-2)));
+        			konecnyVypis.append(vypis.get(i-1).substring(0, (vypis.get(i-1).length()-1)));
         		} else if (i % 5 == 0){
         			konecnyVypis.append(vypis.get(i-1)+ "\n");
         		} else {
