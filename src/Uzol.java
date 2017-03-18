@@ -76,7 +76,7 @@ public class Uzol {
 	}
 	
 	/**
-	 * Vlastna funkcia na vytvorenie hashu pre stav. 
+	 * Vlastna metoda na vytvorenie hashu pre stav. 
 	 * Do hashu sa zapocitavaju vsetky atributy pola vozidiel. Pri znizenie kolizii pouzivam prvocisla 17 a 31 pri vypocte
 	 * @return
 	 */
@@ -94,7 +94,7 @@ public class Uzol {
 	
 
 	/**
-	 * Pomocna funkcia na vypis stavu, presne rozlozenie vozidiel, ich pozicie.
+	 * Pomocna metoda na vypis stavu, presne rozlozenie vozidiel, ich pozicie.
 	 * 
 	 */
 	public void vypisVozidiel() {

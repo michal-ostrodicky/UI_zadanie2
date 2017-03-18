@@ -57,7 +57,7 @@ public class BFS extends Operator {
         //Zistenie ci je najdena cielova pozicia       
         if (porovnajCielovy(sucasnyUzol)){
         	//Ak sme nasli, je potrebne vypisat operatory, ktore sme pouzili
-        	vytvorPole(sucasnyUzol,mapa);
+        	//vytvorPole(sucasnyUzol,mapa);
         	//sucasnyUzol.vypisVozidiel();
         	Uzol cielovy = sucasnyUzol;
         	
@@ -248,7 +248,7 @@ public class BFS extends Operator {
         
 	    } //while is empty
 
-    	//ak sa program dostal sem, spravne riesenie sme nenasli, zasobnik je prazdny
+    	//ak sa program dostal sem, spravne riesenie sme nenasli, front je prazdny
     	System.out.println("*** Nenasiel som riesenie!! ***");
     	System.out.println("Pocet prejdenych stavov v prehladavani do sirky = " + counter);
     	return null;
