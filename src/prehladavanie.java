@@ -170,7 +170,7 @@ public class prehladavanie{
 	/**
 	 * Pomocna metoda na vytvorenie reprezentacie mapy. Kazde cislo vacsie ako 0 znaci nejake vozidlo.
 	 * Tato metoda vsak prijima ako parameter priamo zoznam vozidiel a nie stav. 
-	 * @param zoznamVozidiel - 
+	 * @param zoznamVozidiel - zoznam vozidiel, ktore sa nachadzaju v krizovatke
 	 */
 	public static void vytvorPole(List<Vozidlo> zoznamVozidiel) {
 		int mapa[] = new int[50];

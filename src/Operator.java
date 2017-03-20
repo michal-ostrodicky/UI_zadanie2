@@ -20,7 +20,6 @@ public class Operator {
 		long idPredchodzu = stav.getIdStavu();
 		
 		
-		
 		StringBuilder builder = new StringBuilder();
 		builder.append("VPRAVO(");
 		builder.append(stav.getPoleVozidiel().get(indexVozidla).getFarba());
@@ -98,7 +97,11 @@ public class Operator {
 		return novyStav;
 	}
 	
-	//Metoda na kopirovanie arraylistu vozidiel, pri vytvarani noveho stavu
+	/**
+	 * Metoda na kopirovanie arraylistu vozidiel, pri vytvarani noveho stavu
+	 * @param stav 
+	 * @return Vrati novy list s rovnakymi udajmi ako dostal od uzla v parametri.
+	 */
 			public static List<Vozidlo> copyArrayList(Uzol stav) {
 				int suradnicaX;
 				int suradnicaY;
